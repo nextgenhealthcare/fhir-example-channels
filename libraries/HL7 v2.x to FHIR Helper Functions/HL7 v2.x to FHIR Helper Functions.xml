@@ -1,0 +1,482 @@
+<codeTemplateLibrary version="3.6.0">
+  <id>9025896a-65d0-458c-92ac-335fe985a232</id>
+  <name>HL7 v2.x to FHIR Helper Functions</name>
+  <revision>1</revision>
+  <lastModified>
+    <time>1527184991545</time>
+    <timezone>America/Los_Angeles</timezone>
+  </lastModified>
+  <description>General functions to help convert HL7 v2.x to FHIR resources.
+
+These are used by the example HL7 to FHIR transformer, as well as
+the &quot;HL7 v2.x to FHIR Creation Functions&quot; code template library.</description>
+  <includeNewChannels>false</includeNewChannels>
+  <enabledChannelIds/>
+  <disabledChannelIds/>
+  <codeTemplates>
+    <codeTemplate version="3.6.0">
+      <id>2cc062f8-aac9-48e1-947e-0567d4497e07</id>
+      <name>Cleanup FHIR Patient</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1527107940612</time>
+        <timezone>America/Los_Angeles</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Removes name / telecom / address entries with no actual value.
+
+	@param {Object} patient - The JavaScript Object representing the FHIR Patient.
+	@return {Object} The same Object passed in, cleaned up.
+*/
+function cleanupFhirPatient(patient) {
+	// Remove names with no value
+	cleanupFhirNames(patient, &apos;name&apos;);
+	
+	// Remove telecom entries with no value
+	cleanupFhirTelecoms(patient, &apos;telecom&apos;);
+
+	// Remove address entries with no value
+	cleanupFhirAddresses(patient, &apos;address&apos;);
+
+	if (patient.contact) {
+		for each (contact in patient.contact) {
+			if (!isFhirNameValid(contact.name)) {
+				delete contact.name;
+			}
+			
+			cleanupFhirTelecoms(contact, &apos;telecom&apos;);
+
+			if (!isFhirAddressValid(contact.address)) {
+				delete contact.address;
+			}
+		}
+	}
+
+	return patient;
+}
+
+function cleanupFhirNames(parent, property) {
+	cleanupArray(parent, property, isFhirNameValid);
+}
+
+function isFhirNameValid(name) {
+	return name &amp;&amp; (!isValueEmpty(name.text) || !isValueEmpty(name.family) || !isValueEmpty(name.given) || !isValueEmpty(name.prefix) || !isValueEmpty(name.suffix));
+}
+
+function cleanupFhirTelecoms(parent, property) {
+	cleanupArray(parent, property, function(telecom) {
+		return !isValueEmpty(telecom.value);
+	});
+}
+
+function cleanupFhirAddresses(parent, property) {
+	cleanupArray(parent, property, isFhirAddressValid);
+}
+
+function isFhirAddressValid(address) {
+	return address &amp;&amp; (!isValueEmpty(address.text) || !isValueEmpty(address.line) || !isValueEmpty(address.city) || !isValueEmpty(address.state) || !isValueEmpty(address.postalCode) || !isValueEmpty(address.country));
+}
+
+function cleanupArray(parent, property, handleFunction) {
+	var arr = parent[property];
+
+	if (arr) {
+		var length = arr.length;
+		for (var i = length - 1; i &gt;= 0; i--) {
+			if (!handleFunction(arr[i])) {
+				delete arr[i];
+				length--;
+			}
+		}
+		arr.length = length;
+
+		// Handle Java arrays
+		if (arr.length != length) {
+			parent[property] = org.apache.commons.lang3.ArrayUtils.subarray(arr, 0, length);
+		}
+	}
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>2e62489a-423d-4471-a919-ed3f71827199</id>
+      <name>Combine Arrays</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1527108809257</time>
+        <timezone>America/Los_Angeles</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Combines two arrays into one. Works with both Java and JavaScript arrays.
+
+	@param {Array} array1 - The first array.
+	@param {Array} array2 - The second array.
+	@return {Array} The combined array.
+*/
+function combineArrays(array1, array2) {
+	var isJavaArray1 = Object.prototype.toString.call(array1) == &apos;[object JavaArray]&apos;;
+	var isJavaArray2 = Object.prototype.toString.call(array2) == &apos;[object JavaArray]&apos;;
+
+	if (isJavaArray1 &amp;&amp; isJavaArray2) {
+		return org.apache.commons.lang3.ArrayUtils.addAll(array1, array2);
+	} else if (isJavaArray1) {
+		for (var i = array1.length - 1; i &gt;= 0; i--) {
+			array2.unshift(array1[i]);
+		}
+		return array2;
+	} else {
+		for each (value in array2) {
+			array1.push(value);
+		}
+		return array1;
+	}
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>6faf1e4b-d159-4d34-a07a-2fe0a3bde4cf</id>
+      <name>Consolidate Empty Properties</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1527106778328</time>
+        <timezone>America/Los_Angeles</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Removes empty strings, objects and arrays from a JavaScript object.
+
+	@param {Object/Array} obj - The object or array to consolidate.
+	@return {Object/Array} The consolidates object or array.
+*/
+function consolidate(obj) {
+	if (typeof obj != &apos;undefined&apos; &amp;&amp; obj != null) {
+		var protoToString = Object.prototype.toString.call(obj);
+		
+		if (obj instanceof Array || protoToString == &apos;[object Array]&apos; || protoToString == &apos;[object JavaArray]&apos;) {
+			var length = obj.length;
+			
+			for (var i = obj.length - 1; i &gt;= 0; i--) {
+				if (!doConsolidate(obj, i)) {
+					length--;
+				}
+			}
+			obj.length = length;
+
+			// Handle Java Arrays
+			if (length != obj.length) {
+				obj = org.apache.commons.lang3.ArrayUtils.subarray(obj, 0, length);
+			}
+		} else if (protoToString == &apos;[object Object]&apos;) {
+			for (var property in obj) {
+				doConsolidate(obj, property);
+			}
+		}
+	}
+	return obj;
+}
+
+function doConsolidate(obj, property) {
+	var value = obj[property] = consolidate(obj[property]);
+	var empty = isValueEmpty(value);
+	if (empty) {
+		delete obj[property];
+	}
+	return !empty;
+}
+
+function isValueEmpty(value) {
+	var protoToString = Object.prototype.toString.call(value);
+
+	if (typeof value == &apos;undefined&apos; || value == null) {
+		return true;
+	} else if (value instanceof Array || protoToString == &apos;[object Array]&apos; || protoToString == &apos;[object JavaArray]&apos;) {
+		if (value.length &gt; 0) {
+			for each (element in value) {
+				if (!isValueEmpty(element)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	} else if (typeof value == &apos;string&apos; || protoToString == &apos;[object String]&apos;) {
+		return value.length == 0;
+	} else if (value instanceof java.lang.String) {
+		return org.apache.commons.lang3.StringUtils.isEmpty(value);
+	} else if (protoToString == &apos;[object Object]&apos;) {
+		for (var property in value) {
+			if (!isValueEmpty(value[property])) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	return false;
+}
+</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>b7bffbe4-9da5-40a8-8a35-7e3ad5a9bebf</id>
+      <name>Convert Address Use</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1527091249839</time>
+        <timezone>America/Los_Angeles</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Converts an HL7 v2.x address type code to the corresponding FHIR address use.
+
+	@param {String} code - The HL7 address type (Table 0190)
+	@return {String} The FHIR address use code
+*/
+function convertAddressUse(code) {
+	var fhirCode;
+	
+	switch ((code + &apos;&apos;).toUpperCase()) {
+		case &apos;H&apos;:
+		case &apos;L&apos;:
+		case &apos;M&apos;:
+		case &apos;P&apos;:
+		case &apos;SH&apos;:
+			fhirCode = org.hl7.fhir.dstu3.model.codesystems.AddressUse.HOME;
+			break;
+		case &apos;B&apos;:
+		case &apos;O&apos;:
+		case &apos;BI&apos;:
+			fhirCode = org.hl7.fhir.dstu3.model.codesystems.AddressUse.WORK;
+			break;
+		case &apos;C&apos;:
+		case &apos;V&apos;:
+			fhirCode = org.hl7.fhir.dstu3.model.codesystems.AddressUse.TEMP;
+			break;
+		default:
+			fhirCode = org.hl7.fhir.dstu3.model.codesystems.AddressUse.OLD;
+	}
+
+	return fhirCode.toCode();
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>687a3eef-3155-47c8-bb12-de158d0055ac</id>
+      <name>Convert Date</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1527089001731</time>
+        <timezone>America/Los_Angeles</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Converts an HL7 v2.x formatted date into the correct format for FHIR date.
+	
+	HL7 format expected: yyyyMMdd
+	FHIR format: yyyy-MM-dd
+
+	@param {String} date - The HL7 v2.x date string
+	@return {String} The converted FHIR date string
+*/
+function convertToFhirDate(date) {
+	return convertToFhirTimestamp(date, &quot;yyyy-MM-dd&quot;);
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>f338c38c-477a-4dca-8714-2e96c382716e</id>
+      <name>Convert Gender</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1527094560813</time>
+        <timezone>America/Los_Angeles</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Converts an HL7 v2.x gender code to the corresponding FHIR code.
+
+	@param {String} code - The HL7 gender code (Table 0001)
+	@return {String} The FHIR administrative gender code
+*/
+function convertToFhirGender(code) {
+	var fhirCode;
+	
+	switch ((code + &apos;&apos;).toUpperCase()) {
+		case &apos;F&apos;:
+			fhirCode = org.hl7.fhir.dstu3.model.codesystems.AdministrativeGender.FEMALE;
+			break;
+		case &apos;M&apos;:
+			fhirCode = org.hl7.fhir.dstu3.model.codesystems.AdministrativeGender.MALE;
+			break;
+		case &apos;O&apos;:
+		case &apos;A&apos;:
+		case &apos;N&apos;:
+			fhirCode = org.hl7.fhir.dstu3.model.codesystems.AdministrativeGender.OTHER;
+			break;
+		case &apos;U&apos;:
+		default:
+			fhirCode = org.hl7.fhir.dstu3.model.codesystems.AdministrativeGender.UNKNOWN;
+	}
+
+	return fhirCode.toCode();
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>0061fef8-39be-48c1-b81e-60719c97c149</id>
+      <name>Convert Timestamp</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1527089001719</time>
+        <timezone>America/Los_Angeles</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Converts an HL7 v2.x formatted timestamp into the correct format for FHIR dateTime.
+	
+	HL7 format expected: yyyyMMddHHmmssZZ
+	FHIR format: yyyy-MM-dd&apos;T&apos;HH:mm:ssZZ
+
+	@param {String} date - The HL7 v2.x timestamp string
+	@return {String} The converted FHIR timestamp string
+*/
+function convertToFhirTimestamp(date) {
+	if (!date) {
+		return &apos;&apos;;
+	}
+
+	var patterns = [
+		&quot;yyyyMMddHHmmss.SSSZZ&quot;,
+		&quot;yyyyMMddHHmmss.SSSZ&quot;,
+		&quot;yyyyMMddHHmmss.SSS&quot;,
+		&quot;yyyyMMddHHmmssZZ&quot;,
+		&quot;yyyyMMddHHmmssZ&quot;,
+		&quot;yyyyMMddHHmmss&quot;,
+		&quot;yyyyMMddHHmm&quot;,
+		&quot;yyyyMMddHH&quot;,
+		&quot;yyyyMMdd&quot;
+	];
+
+	var instant;
+	for each (pattern in patterns) {
+		try {
+			instant = org.joda.time.format.DateTimeFormat.forPattern(pattern).parseMillis(new String(date));
+			break;
+		} catch(e) {}
+	}
+
+	if (instant) {
+		var outpattern = arguments.length &gt;= 2 ? arguments[1] : &quot;yyyy-MM-dd&apos;T&apos;HH:mm:ssZZ&quot;;
+		try {
+			return org.joda.time.format.DateTimeFormat.forPattern(outpattern).print(instant);
+		} catch (e) {}
+	}
+	
+	return date;
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>760658e4-f24f-4a57-bbb9-9ae847f6daf8</id>
+      <name>Convert Yes/No Indicator</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1527091249810</time>
+        <timezone>America/Los_Angeles</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Converts an HL7 v2.x yes/no indicator code to a boolean value. If the code is null or an empty string,
+	false will be returned.
+
+	@param {String} code - The HL7 yes/no indicator (Table 0136)
+	@return {Boolean} True/false
+*/
+function convertYesNoIndicator(code) {
+	return code == &apos;Y&apos;;
+}</code>
+      </properties>
+    </codeTemplate>
+  </codeTemplates>
+</codeTemplateLibrary>

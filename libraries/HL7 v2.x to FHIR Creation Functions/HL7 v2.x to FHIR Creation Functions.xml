@@ -1,0 +1,1332 @@
+<codeTemplateLibrary version="3.6.0">
+  <id>4f1160ba-0cd5-4899-9329-03683147ccca</id>
+  <name>HL7 v2.x to FHIR Creation Functions</name>
+  <revision>1</revision>
+  <lastModified>
+    <time>1527184991541</time>
+    <timezone>America/Los_Angeles</timezone>
+  </lastModified>
+  <description>These code templates serve as an example of how to dynamically build
+FHIR resources and convert from other formats such as HL7 v2.x.
+
+Some of the code templates in this library are dependent on other
+code templates from the &quot;HL7 v2.x to FHIR Helper Functions&quot; library.</description>
+  <includeNewChannels>false</includeNewChannels>
+  <enabledChannelIds/>
+  <disabledChannelIds/>
+  <codeTemplates>
+    <codeTemplate version="3.6.0">
+      <id>63476871-1ea1-4377-8998-0e2e0670e575</id>
+      <name>Create and Consolidate FHIR Patient</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1527110341487</time>
+        <timezone>America/Los_Angeles</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Constructs a new FHIR Patient object from the PID and NK1 segments. Also consolidates and cleans up
+	empty fields.
+
+	@param {XML} msg - The E4X XML representation of the HL7 v2.x message.
+	@return {Object} The JavaScript Object representation of the FHIR Patient.
+*/
+function createAndConsolidateFhirPatient(msg) {
+	return consolidate(cleanupFhirPatient(createFhirPatient(msg)));
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>67f171ca-47bd-431c-b71b-4b032ee52e21</id>
+      <name>Create FHIR Patient</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1527110265444</time>
+        <timezone>America/Los_Angeles</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.plugins.fhir.shared.FhirModelBuilderCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <functionSignature>createFhirPatient(msg)</functionSignature>
+        <jsDoc>/**
+	Use the createAndConsolidateFhirPatient method instead, as it consolidates empty fields too.
+	Constructs a new FHIR Patient object from the PID and NK1 segments.
+
+	@param {XML} msg - The E4X XML representation of the HL7 v2.x message.
+	@return {Object} The JavaScript Object representation of the FHIR Patient.
+*/</jsDoc>
+        <resultReturnValue>true</resultReturnValue>
+        <resultMapType>CHANNEL</resultMapType>
+        <resultMapVariable></resultMapVariable>
+        <definition>Patient</definition>
+        <model class="objectModel">
+          <usingBuilder>true</usingBuilder>
+          <properties class="linked-hash-map">
+            <entry>
+              <string>resourceType</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="stringModel">
+                  <stringValue>Patient</stringValue>
+                  <usingEnum>true</usingEnum>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>identifier</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="arrayModel">
+                  <stringValue>createPatientIdentifiers(msg[&apos;PID&apos;])</stringValue>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>name</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="arrayModel">
+                  <stringValue>createPatientNames(msg[&apos;PID&apos;])</stringValue>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>telecom</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="arrayModel">
+                  <stringValue>createPatientTelecoms(msg[&apos;PID&apos;])</stringValue>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>gender</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="stringModel">
+                  <stringValue>convertToFhirGender(msg[&apos;PID&apos;][&apos;PID.8&apos;][&apos;PID.8.1&apos;].toString())</stringValue>
+                  <scriptExpression>true</scriptExpression>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>birthDate</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="stringModel">
+                  <stringValue>convertToFhirDate(msg[&apos;PID&apos;][&apos;PID.7&apos;][&apos;PID.7.1&apos;].toString())</stringValue>
+                  <scriptExpression>true</scriptExpression>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>deceasedBoolean</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="booleanModel">
+                  <stringValue>convertYesNoIndicator(msg[&apos;PID&apos;][&apos;PID.30&apos;][&apos;PID.30.1&apos;].toString())</stringValue>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>deceasedDateTime</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="stringModel">
+                  <stringValue>convertToFhirTimestamp(msg[&apos;PID&apos;][&apos;PID.29&apos;][&apos;PID.29.1&apos;].toString())</stringValue>
+                  <scriptExpression>true</scriptExpression>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>address</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="arrayModel">
+                  <stringValue>createPatientAddresses(msg[&apos;PID&apos;])</stringValue>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>maritalStatus</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="objectModel">
+                  <usingBuilder>true</usingBuilder>
+                  <properties class="linked-hash-map">
+                    <entry>
+                      <string>text</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="stringModel">
+                          <stringValue>msg[&apos;PID&apos;][&apos;PID.16&apos;][&apos;PID.16.1&apos;].toString()</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                  </properties>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>multipleBirthBoolean</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="booleanModel">
+                  <stringValue>convertYesNoIndicator(msg[&apos;PID&apos;][&apos;PID.24&apos;][&apos;PID.24.1&apos;].toString())</stringValue>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>contact</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="arrayModel">
+                  <stringValue>createPatientContacts(msg[&apos;NK1&apos;])</stringValue>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>communication</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="arrayModel">
+                  <usingBuilder>true</usingBuilder>
+                  <elements>
+                    <objectModel>
+                      <usingBuilder>true</usingBuilder>
+                      <properties class="linked-hash-map">
+                        <entry>
+                          <string>language</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="objectModel">
+                              <usingBuilder>true</usingBuilder>
+                              <properties class="linked-hash-map">
+                                <entry>
+                                  <string>text</string>
+                                  <objectProperty>
+                                    <enabled>true</enabled>
+                                    <properties class="stringModel">
+                                      <stringValue>msg[&apos;PID&apos;][&apos;PID.15&apos;][&apos;PID.15.2&apos;].toString()</stringValue>
+                                      <scriptExpression>true</scriptExpression>
+                                    </properties>
+                                  </objectProperty>
+                                </entry>
+                                <entry>
+                                  <string>id</string>
+                                  <objectProperty>
+                                    <enabled>true</enabled>
+                                    <properties class="stringModel">
+                                      <stringValue>msg[&apos;PID&apos;][&apos;PID.15&apos;][&apos;PID.15.1&apos;].toString()</stringValue>
+                                      <scriptExpression>true</scriptExpression>
+                                    </properties>
+                                  </objectProperty>
+                                </entry>
+                              </properties>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                      </properties>
+                    </objectModel>
+                  </elements>
+                </properties>
+              </objectProperty>
+            </entry>
+          </properties>
+        </model>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>767a5ea0-0510-4784-a651-770759f2c4ca</id>
+      <name>Create FHIR Patient Address</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1527111747544</time>
+        <timezone>America/Los_Angeles</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.plugins.fhir.shared.FhirModelBuilderCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <functionSignature>createPatientAddress(pid11)</functionSignature>
+        <jsDoc>/**
+	Creates a new FHIR Address object from the given PID.11 field.
+
+	@param {XML} pid11 - The E4X XML PID.11 node from the HL7 v2.x message.
+	@return {Object} The JavaScript Object representation of the FHIR Address.
+*/</jsDoc>
+        <resultReturnValue>true</resultReturnValue>
+        <resultMapType>CHANNEL</resultMapType>
+        <resultMapVariable></resultMapVariable>
+        <definition>Address</definition>
+        <model class="objectModel">
+          <usingBuilder>true</usingBuilder>
+          <properties class="linked-hash-map">
+            <entry>
+              <string>use</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="stringModel">
+                  <stringValue>convertAddressUse(pid11[&apos;PID.11.7&apos;].toString())</stringValue>
+                  <scriptExpression>true</scriptExpression>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>type</string>
+              <objectProperty>
+                <enabled>false</enabled>
+                <properties class="stringModel">
+                  <stringValue>postal</stringValue>
+                  <usingEnum>true</usingEnum>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>text</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="stringModel">
+                  <stringValue>(pid11[&apos;PID.11.1&apos;].toString() + &apos; &apos; + pid11[&apos;PID.11.2&apos;].toString() + &apos; &apos; + pid11[&apos;PID.11.3&apos;].toString() + &apos; &apos; + pid11[&apos;PID.11.4&apos;].toString() + &apos; &apos; + pid11[&apos;PID.11.5&apos;].toString() + &apos; &apos; + pid11[&apos;PID.11.6&apos;].toString()).trim()</stringValue>
+                  <scriptExpression>true</scriptExpression>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>line</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="arrayModel">
+                  <usingBuilder>true</usingBuilder>
+                  <elements>
+                    <stringModel>
+                      <stringValue>pid11[&apos;PID.11.1&apos;].toString()</stringValue>
+                      <scriptExpression>true</scriptExpression>
+                    </stringModel>
+                    <stringModel>
+                      <stringValue>pid11[&apos;PID.11.2&apos;].toString()</stringValue>
+                      <scriptExpression>true</scriptExpression>
+                    </stringModel>
+                  </elements>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>city</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="stringModel">
+                  <stringValue>pid11[&apos;PID.11.3&apos;].toString()</stringValue>
+                  <scriptExpression>true</scriptExpression>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>district</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="stringModel">
+                  <stringValue>pid11[&apos;PID.11.9&apos;].toString()</stringValue>
+                  <scriptExpression>true</scriptExpression>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>state</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="stringModel">
+                  <stringValue>pid11[&apos;PID.11.4&apos;].toString()</stringValue>
+                  <scriptExpression>true</scriptExpression>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>postalCode</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="stringModel">
+                  <stringValue>pid11[&apos;PID.11.5&apos;].toString()</stringValue>
+                  <scriptExpression>true</scriptExpression>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>country</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="stringModel">
+                  <stringValue>pid11[&apos;PID.11.6&apos;].toString()</stringValue>
+                  <scriptExpression>true</scriptExpression>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>period</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="objectModel">
+                  <usingBuilder>true</usingBuilder>
+                  <properties class="linked-hash-map">
+                    <entry>
+                      <string>start</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="stringModel">
+                          <stringValue>convertToFhirTimestamp(pid11[&apos;PID.11.13&apos;].toString())</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                    <entry>
+                      <string>end</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="stringModel">
+                          <stringValue>convertToFhirTimestamp(pid11[&apos;PID.11.14&apos;].toString())</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                  </properties>
+                </properties>
+              </objectProperty>
+            </entry>
+          </properties>
+        </model>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>815aeba2-099f-4f62-aae0-567aa9927a4b</id>
+      <name>Create FHIR Patient Addresses</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1527117740412</time>
+        <timezone>America/Los_Angeles</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Creates a new array of FHIR Address objects from the given PID segment.
+
+	@param {XML} pid - The E4X XML PID node from the HL7 v2.x message.
+	@return {Array} The array of Address objects.
+*/
+function createPatientAddresses(pid) {
+	var addresses = Lists.list();
+	for (var i = 0; i &lt; pid[&apos;PID.11&apos;].length(); i++) {
+		addresses.add(createPatientAddress(pid[&apos;PID.11&apos;][i]));
+	}
+	return addresses.toArray();
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>b8ca268a-0fda-4445-95bc-27334ebcf97f</id>
+      <name>Create FHIR Patient Contact</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1527112814630</time>
+        <timezone>America/Los_Angeles</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.plugins.fhir.shared.FhirModelBuilderCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <functionSignature>createPatientContact(nk1)</functionSignature>
+        <jsDoc>/**
+	Creates a new FHIR Patient_Contact object from the given NK1 segment.
+
+	@param {XML} nk1 - The E4X XML NK1 segment from the HL7 v2.x message.
+	@return {Object} The JavaScript Object representation of the FHIR Patient_Contact.
+*/</jsDoc>
+        <resultReturnValue>true</resultReturnValue>
+        <resultMapType>CHANNEL</resultMapType>
+        <resultMapVariable></resultMapVariable>
+        <definition>Patient_Contact</definition>
+        <model class="objectModel">
+          <usingBuilder>true</usingBuilder>
+          <properties class="linked-hash-map">
+            <entry>
+              <string>relationship</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="arrayModel">
+                  <usingBuilder>true</usingBuilder>
+                  <elements>
+                    <objectModel>
+                      <usingBuilder>true</usingBuilder>
+                      <properties class="linked-hash-map">
+                        <entry>
+                          <string>text</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>nk1[&apos;NK1.3&apos;][&apos;NK1.3.2&apos;].toString()</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                        <entry>
+                          <string>id</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>nk1[&apos;NK1.3&apos;][&apos;NK1.3.1&apos;].toString()</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                      </properties>
+                    </objectModel>
+                    <objectModel>
+                      <usingBuilder>true</usingBuilder>
+                      <properties class="linked-hash-map">
+                        <entry>
+                          <string>text</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>nk1[&apos;NK1.7&apos;][&apos;NK1.7.2&apos;].toString()</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                        <entry>
+                          <string>id</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>nk1[&apos;NK1.7&apos;][&apos;NK1.7.1&apos;].toString()</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                      </properties>
+                    </objectModel>
+                  </elements>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>name</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="objectModel">
+                  <usingBuilder>true</usingBuilder>
+                  <properties class="linked-hash-map">
+                    <entry>
+                      <string>use</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="stringModel">
+                          <stringValue>usual</stringValue>
+                          <usingEnum>true</usingEnum>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                    <entry>
+                      <string>family</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="stringModel">
+                          <stringValue>nk1[&apos;NK1.2&apos;][&apos;NK1.2.1&apos;].toString()</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                    <entry>
+                      <string>given</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="arrayModel">
+                          <usingBuilder>true</usingBuilder>
+                          <elements>
+                            <stringModel>
+                              <stringValue>nk1[&apos;NK1.2&apos;][&apos;NK1.2.2&apos;].toString()</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </stringModel>
+                            <stringModel>
+                              <stringValue>nk1[&apos;NK1.2&apos;][&apos;NK1.2.3&apos;].toString()</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </stringModel>
+                          </elements>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                    <entry>
+                      <string>prefix</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="arrayModel">
+                          <usingBuilder>true</usingBuilder>
+                          <elements>
+                            <stringModel>
+                              <stringValue>nk1[&apos;NK1.2&apos;][&apos;NK1.2.5&apos;].toString()</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </stringModel>
+                          </elements>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                    <entry>
+                      <string>suffix</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="arrayModel">
+                          <usingBuilder>true</usingBuilder>
+                          <elements>
+                            <stringModel>
+                              <stringValue>nk1[&apos;NK1.2&apos;][&apos;NK1.2.4&apos;].toString()</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </stringModel>
+                          </elements>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                    <entry>
+                      <string>period</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="objectModel">
+                          <usingBuilder>true</usingBuilder>
+                          <properties class="linked-hash-map">
+                            <entry>
+                              <string>start</string>
+                              <objectProperty>
+                                <enabled>true</enabled>
+                                <properties class="stringModel">
+                                  <stringValue>convertToFhirTimestamp(nk1[&apos;NK1.2&apos;][&apos;NK1.2.12&apos;].toString())</stringValue>
+                                  <scriptExpression>true</scriptExpression>
+                                </properties>
+                              </objectProperty>
+                            </entry>
+                            <entry>
+                              <string>end</string>
+                              <objectProperty>
+                                <enabled>true</enabled>
+                                <properties class="stringModel">
+                                  <stringValue>convertToFhirTimestamp(nk1[&apos;NK1.2&apos;][&apos;NK1.2.13&apos;].toString())</stringValue>
+                                  <scriptExpression>true</scriptExpression>
+                                </properties>
+                              </objectProperty>
+                            </entry>
+                          </properties>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                  </properties>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>telecom</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="arrayModel">
+                  <stringValue>createPatientContactTelecoms(nk1)</stringValue>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>address</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="objectModel">
+                  <usingBuilder>true</usingBuilder>
+                  <properties class="linked-hash-map">
+                    <entry>
+                      <string>use</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="stringModel">
+                          <stringValue>convertAddressUse(nk1[&apos;NK1.4&apos;][&apos;NK1.4.7&apos;].toString())</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                    <entry>
+                      <string>type</string>
+                      <objectProperty>
+                        <enabled>false</enabled>
+                        <properties class="stringModel">
+                          <stringValue>postal</stringValue>
+                          <usingEnum>true</usingEnum>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                    <entry>
+                      <string>text</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="stringModel">
+                          <stringValue>(nk1[&apos;NK1.4&apos;][&apos;NK1.4.1&apos;].toString() + &apos; &apos; + nk1[&apos;NK1.4&apos;][&apos;NK1.4.2&apos;].toString() + &apos; &apos; + nk1[&apos;NK1.4&apos;][&apos;NK1.4.3&apos;].toString() + &apos; &apos; + nk1[&apos;NK1.4&apos;][&apos;NK1.4.4&apos;].toString() + &apos; &apos; + nk1[&apos;NK1.4&apos;][&apos;NK1.4.5&apos;].toString() + &apos; &apos; + nk1[&apos;NK1.4&apos;][&apos;NK1.4.6&apos;].toString()).trim()</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                    <entry>
+                      <string>line</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="arrayModel">
+                          <usingBuilder>true</usingBuilder>
+                          <elements>
+                            <stringModel>
+                              <stringValue>nk1[&apos;NK1.4&apos;][&apos;NK1.4.1&apos;].toString()</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </stringModel>
+                            <stringModel>
+                              <stringValue>nk1[&apos;NK1.4&apos;][&apos;NK1.4.2&apos;].toString()</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </stringModel>
+                          </elements>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                    <entry>
+                      <string>city</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="stringModel">
+                          <stringValue>nk1[&apos;NK1.4&apos;][&apos;NK1.4.3&apos;].toString()</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                    <entry>
+                      <string>district</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="stringModel">
+                          <stringValue>nk1[&apos;NK1.4&apos;][&apos;NK1.4.9&apos;].toString()</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                    <entry>
+                      <string>state</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="stringModel">
+                          <stringValue>nk1[&apos;NK1.4&apos;][&apos;NK1.4.4&apos;].toString()</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                    <entry>
+                      <string>postalCode</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="stringModel">
+                          <stringValue>nk1[&apos;NK1.4&apos;][&apos;NK1.4.5&apos;].toString()</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                    <entry>
+                      <string>country</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="stringModel">
+                          <stringValue>nk1[&apos;NK1.4&apos;][&apos;NK1.4.6&apos;].toString()</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                    <entry>
+                      <string>period</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="objectModel">
+                          <usingBuilder>true</usingBuilder>
+                          <properties class="linked-hash-map">
+                            <entry>
+                              <string>start</string>
+                              <objectProperty>
+                                <enabled>true</enabled>
+                                <properties class="stringModel">
+                                  <stringValue>convertToFhirTimestamp(nk1[&apos;NK1.4&apos;][&apos;NK1.4.13&apos;].toString())</stringValue>
+                                  <scriptExpression>true</scriptExpression>
+                                </properties>
+                              </objectProperty>
+                            </entry>
+                            <entry>
+                              <string>end</string>
+                              <objectProperty>
+                                <enabled>true</enabled>
+                                <properties class="stringModel">
+                                  <stringValue>convertToFhirTimestamp(nk1[&apos;NK1.4&apos;][&apos;NK1.4.14&apos;].toString())</stringValue>
+                                  <scriptExpression>true</scriptExpression>
+                                </properties>
+                              </objectProperty>
+                            </entry>
+                          </properties>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                  </properties>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>gender</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="stringModel">
+                  <stringValue>convertToFhirGender(nk1[&apos;NK1.15&apos;][&apos;NK1.15.1&apos;].toString())</stringValue>
+                  <scriptExpression>true</scriptExpression>
+                </properties>
+              </objectProperty>
+            </entry>
+          </properties>
+        </model>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>f58ca0f3-f121-453d-ad59-b960300fa35f</id>
+      <name>Create FHIR Patient Contact Telecoms</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1527112814685</time>
+        <timezone>America/Los_Angeles</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Creates a new array of FHIR ContactPoint objects from the given NK1 segment.
+
+	@param {XML} nk1 - The E4X XML NK1 segment from the HL7 v2.x message.
+	@return {Array} The array of ContactPoint objects.
+*/
+function createPatientContactTelecoms(nk1) {
+	var telecoms = Lists.list();
+	for (var i = 0; i &lt; nk1[&apos;NK1.5&apos;].length(); i++) {
+		telecoms.add(createPatientTelecom(nk1[&apos;NK1.5&apos;][i], &apos;home&apos;));
+	}
+	for (var i = 0; i &lt; nk1[&apos;NK1.6&apos;].length(); i++) {
+		telecoms.add(createPatientTelecom(nk1[&apos;NK1.6&apos;][i], &apos;work&apos;));
+	}
+	return telecoms.toArray();
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>d66442af-90e6-4e2b-813a-b287cdc05af6</id>
+      <name>Create FHIR Patient Contacts</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1527117459046</time>
+        <timezone>America/Los_Angeles</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Creates a new array of FHIR Patient_Contact objects for all NK1 segments in the message.
+
+	@param {XML} nk1List - The E4X XML NK1 list from the HL7 v2.x message.
+	@return {Array} The array of Patient_Contact objects.
+*/
+function createPatientContacts(nk1List) {
+	var contacts = Lists.list();
+	for (var i = 0; i &lt; nk1List.length(); i++) {
+		contacts.add(createPatientContact(nk1List[i]));
+	}
+	return contacts.toArray();
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>1f5b9ac0-85c0-4602-a164-89b8e13256ae</id>
+      <name>Create FHIR Patient Identifier</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1527110747655</time>
+        <timezone>America/Los_Angeles</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.plugins.fhir.shared.FhirModelBuilderCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <functionSignature>createPatientIdentifier(pid3)</functionSignature>
+        <jsDoc>/**
+	Creates a new FHIR Identifier object from the given PID.3 field.
+
+	@param {XML} pid3 - The E4X XML PID.3 node of the HL7 v2.x message.
+	@return {Object} The JavaScript Object representation of the FHIR Identifier.
+*/</jsDoc>
+        <resultReturnValue>true</resultReturnValue>
+        <resultMapType>CHANNEL</resultMapType>
+        <resultMapVariable></resultMapVariable>
+        <definition>Identifier</definition>
+        <model class="objectModel">
+          <usingBuilder>true</usingBuilder>
+          <properties class="linked-hash-map">
+            <entry>
+              <string>use</string>
+              <objectProperty>
+                <enabled>false</enabled>
+                <properties class="stringModel">
+                  <stringValue>usual</stringValue>
+                  <usingEnum>true</usingEnum>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>type</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="objectModel">
+                  <usingBuilder>true</usingBuilder>
+                  <properties class="linked-hash-map">
+                    <entry>
+                      <string>text</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="stringModel">
+                          <stringValue>pid3[&apos;PID.3.5&apos;].toString()</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                  </properties>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>system</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="stringModel">
+                  <stringValue>pid3[&apos;PID.3.4&apos;].toString()</stringValue>
+                  <scriptExpression>true</scriptExpression>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>value</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="stringModel">
+                  <stringValue>pid3[&apos;PID.3.1&apos;].toString()</stringValue>
+                  <scriptExpression>true</scriptExpression>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>period</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="objectModel">
+                  <usingBuilder>true</usingBuilder>
+                  <properties class="linked-hash-map">
+                    <entry>
+                      <string>start</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="stringModel">
+                          <stringValue>convertToFhirTimestamp(pid3[&apos;PID.3.7&apos;].toString())</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                    <entry>
+                      <string>end</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="stringModel">
+                          <stringValue>convertToFhirTimestamp(pid3[&apos;PID.3.8&apos;].toString())</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                  </properties>
+                </properties>
+              </objectProperty>
+            </entry>
+          </properties>
+        </model>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>1132126f-5bd3-4b2f-a11c-f7107114c8da</id>
+      <name>Create FHIR Patient Identifiers</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1527112523973</time>
+        <timezone>America/Los_Angeles</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Creates a new array of FHIR Identifier objects from the given PID segment.
+
+	@param {XML} pid - The E4X XML PID node from the HL7 v2.x message.
+	@return {Array} The array of Identifier objects.
+*/
+function createPatientIdentifiers(pid) {
+	var identifiers = Lists.list();
+	for (var i = 0; i &lt; pid[&apos;PID.3&apos;].length(); i++) {
+		identifiers.add(createPatientIdentifier(pid[&apos;PID.3&apos;][i]));
+	}
+	return identifiers.toArray();
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>a446affe-ac81-4fea-8572-336ba63dfeae</id>
+      <name>Create FHIR Patient Name</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1527111130643</time>
+        <timezone>America/Los_Angeles</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.plugins.fhir.shared.FhirModelBuilderCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <functionSignature>createPatientName(node)</functionSignature>
+        <jsDoc>/**
+	Creates a new FHIR HumanName object from the given PID.5 or PID.9 field.
+
+	@param {XML} node - The E4X XML PID.5 or PID.9 field from the HL7 v2.x message.
+	@return {Object} The JavaScript Object representation of the FHIR HumanName.
+*/</jsDoc>
+        <resultReturnValue>true</resultReturnValue>
+        <resultMapType>CHANNEL</resultMapType>
+        <resultMapVariable></resultMapVariable>
+        <definition>HumanName</definition>
+        <model class="objectModel">
+          <usingBuilder>true</usingBuilder>
+          <properties class="linked-hash-map">
+            <entry>
+              <string>use</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="stringModel">
+                  <stringValue>usual</stringValue>
+                  <usingEnum>true</usingEnum>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>family</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="stringModel">
+                  <stringValue>node[&apos;PID.5.1&apos;].toString() || node[&apos;PID.9.1&apos;].toString()</stringValue>
+                  <scriptExpression>true</scriptExpression>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>given</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="arrayModel">
+                  <usingBuilder>true</usingBuilder>
+                  <elements>
+                    <stringModel>
+                      <stringValue>node[&apos;PID.5.2&apos;].toString() || node[&apos;PID.9.2&apos;].toString()</stringValue>
+                      <scriptExpression>true</scriptExpression>
+                    </stringModel>
+                    <stringModel>
+                      <stringValue>node[&apos;PID.5.3&apos;].toString() || node[&apos;PID.9.3&apos;].toString()</stringValue>
+                      <scriptExpression>true</scriptExpression>
+                    </stringModel>
+                  </elements>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>prefix</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="arrayModel">
+                  <usingBuilder>true</usingBuilder>
+                  <elements>
+                    <stringModel>
+                      <stringValue>node[&apos;PID.5.5&apos;].toString() || node[&apos;PID.9.5&apos;].toString()</stringValue>
+                      <scriptExpression>true</scriptExpression>
+                    </stringModel>
+                  </elements>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>suffix</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="arrayModel">
+                  <usingBuilder>true</usingBuilder>
+                  <elements>
+                    <stringModel>
+                      <stringValue>node[&apos;PID.5.4&apos;].toString() || node[&apos;PID.9.4&apos;].toString()</stringValue>
+                      <scriptExpression>true</scriptExpression>
+                    </stringModel>
+                  </elements>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>period</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="objectModel">
+                  <usingBuilder>true</usingBuilder>
+                  <properties class="linked-hash-map">
+                    <entry>
+                      <string>start</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="stringModel">
+                          <stringValue>node[&apos;PID.5.12&apos;].toString() || node[&apos;PID.9.12&apos;].toString()</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                    <entry>
+                      <string>end</string>
+                      <objectProperty>
+                        <enabled>true</enabled>
+                        <properties class="stringModel">
+                          <stringValue>node[&apos;PID.5.13&apos;].toString() || node[&apos;PID.9.13&apos;].toString()</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </properties>
+                      </objectProperty>
+                    </entry>
+                  </properties>
+                </properties>
+              </objectProperty>
+            </entry>
+          </properties>
+        </model>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>d73cd539-ab3c-4e82-bd24-81a6025e7ed4</id>
+      <name>Create FHIR Patient Names</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1527117574679</time>
+        <timezone>America/Los_Angeles</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Creates a new array of FHIR HumanName objects from the given PID segment.
+
+	@param {XML} pid - The E4X XML PID node from the HL7 v2.x message.
+	@return {Array} The array of HumanName objects.
+*/
+function createPatientNames(pid) {
+	var names = Lists.list();
+	for (var i = 0; i &lt; pid[&apos;PID.5&apos;].length(); i++) {
+		names.add(createPatientName(pid[&apos;PID.5&apos;][i]));
+	}
+	for (var i = 0; i &lt; pid[&apos;PID.9&apos;].length(); i++) {
+		names.add(createPatientName(pid[&apos;PID.9&apos;][i]));
+	}
+	return names.toArray();
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>ab382e75-1993-4d31-b9b8-6295b8d241ca</id>
+      <name>Create FHIR Patient Telecom</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1527112524003</time>
+        <timezone>America/Los_Angeles</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.plugins.fhir.shared.FhirModelBuilderCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <functionSignature>createPatientTelecom(node, use)</functionSignature>
+        <jsDoc>/**
+	Creates a new FHIR ContactPoint object from the given PID.13, PID.14, NK1.5, or NK1.6 field.
+
+	@param {XML} node - The E4X XML PID.13, PID.14, NK1.5, or NK1.6 field from the HL7 v2.x message.
+	@param {String} use - The FHIR telecom use value: home/work/temp/old/mobile
+	@return {Object} The JavaScript Object representation of the FHIR ContactPoint.
+*/</jsDoc>
+        <resultReturnValue>true</resultReturnValue>
+        <resultMapType>CHANNEL</resultMapType>
+        <resultMapVariable></resultMapVariable>
+        <definition>ContactPoint</definition>
+        <model class="objectModel">
+          <usingBuilder>true</usingBuilder>
+          <properties class="linked-hash-map">
+            <entry>
+              <string>system</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="stringModel">
+                  <stringValue>phone</stringValue>
+                  <usingEnum>true</usingEnum>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>value</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="stringModel">
+                  <stringValue>node[&apos;PID.13.1&apos;].toString() || node[&apos;PID.14.1&apos;].toString() || node[&apos;NK1.5.1&apos;].toString() || node[&apos;NK1.6.1&apos;].toString()</stringValue>
+                  <scriptExpression>true</scriptExpression>
+                </properties>
+              </objectProperty>
+            </entry>
+            <entry>
+              <string>use</string>
+              <objectProperty>
+                <enabled>true</enabled>
+                <properties class="stringModel">
+                  <stringValue>use</stringValue>
+                  <scriptExpression>true</scriptExpression>
+                </properties>
+              </objectProperty>
+            </entry>
+          </properties>
+        </model>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>2b99377c-f3c3-422e-ab55-3b0d3b344107</id>
+      <name>Create FHIR Patient Telecoms</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1527112524016</time>
+        <timezone>America/Los_Angeles</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Creates a new array of FHIR ContactPoint objects from the given PID segment.
+
+	@param {XML} pid - The E4X XML PID node from the HL7 v2.x message.
+	@return {Array} The array of ContactPoint objects.
+*/
+function createPatientTelecoms(pid) {
+	var telecoms = Lists.list();
+	for (var i = 0; i &lt; pid[&apos;PID.13&apos;].length(); i++) {
+		telecoms.add(createPatientTelecom(pid[&apos;PID.13&apos;][i], &apos;home&apos;));
+	}
+	for (var i = 0; i &lt; pid[&apos;PID.14&apos;].length(); i++) {
+		telecoms.add(createPatientTelecom(pid[&apos;PID.14&apos;][i], &apos;work&apos;));
+	}
+	return telecoms.toArray();
+}</code>
+      </properties>
+    </codeTemplate>
+  </codeTemplates>
+</codeTemplateLibrary>

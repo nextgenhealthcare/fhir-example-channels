@@ -1,0 +1,826 @@
+<codeTemplateLibrary version="3.6.0">
+  <id>1f350e29-158e-4645-8809-9e60d1a47854</id>
+  <name>FHIR DB Operations</name>
+  <revision>1</revision>
+  <lastModified>
+    <time>1528396383217</time>
+    <timezone>GMT</timezone>
+  </lastModified>
+  <description>Functions used by the FHIR Listener channel to communicate with the database.
+PostgreSQL and SQL Server are supported. If you want to support other database
+servers, feel free to add your own database-specific operations and queries.</description>
+  <includeNewChannels>false</includeNewChannels>
+  <enabledChannelIds>
+    <string>1892f241-d643-4abb-b0af-b20b87e0cf12</string>
+  </enabledChannelIds>
+  <disabledChannelIds/>
+  <codeTemplates>
+    <codeTemplate version="3.6.0">
+      <id>13e82aac-df07-463e-b8ca-8f4b98243618</id>
+      <name>FHIR DB - Execute Cached Query</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1528395614316</time>
+        <timezone>GMT</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>CHANNEL_ATTACHMENT</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>CHANNEL_POSTPROCESSOR</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Executes a prepared query on the FHIR database and returns a CachedRowSet.
+
+	@param {String} expression - The prepared statement to be executed.
+	@param {Array} parameters - The parameters for the prepared statement.
+	@param {DatabaseConnection} dbConn - Optionally provide a specific connection object.
+	@return {CachedRowSet} The result of the query, as a CachedRowSet.
+*/
+function executeCachedQuery(expression, parameters, dbConn) {
+	return executeOperation(&apos;executeCachedQuery&apos;, expression, parameters, dbConn);
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>9ec9d96c-4ea4-4f1c-8520-b73782f36aed</id>
+      <name>FHIR DB - Execute Cached Query and Get Keys</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1528395622395</time>
+        <timezone>GMT</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>CHANNEL_ATTACHMENT</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>CHANNEL_POSTPROCESSOR</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Executes an INSERT/UPDATE statement on the database and returns a CachedRowSet containing any
+	generated keys.
+
+	@param {String} expression - The prepared statement to be executed.
+	@param {Array} parameters - The parameters for the prepared statement.
+	@param {DatabaseConnection} dbConn - Optionally provide a specific connection object.
+	@return {CachedRowSet} A CachedRowSet containing any generated keys.
+*/
+function executeUpdateAndGetGeneratedKeys(expression, parameters, dbConn) {
+	return executeOperation(&apos;executeUpdateAndGetGeneratedKeys&apos;, expression, parameters, dbConn);
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>8960e710-4870-49ea-b952-63d2b74b7bbc</id>
+      <name>FHIR DB - Execute Update</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1528395607231</time>
+        <timezone>GMT</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>CHANNEL_ATTACHMENT</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>CHANNEL_POSTPROCESSOR</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Executes a prepared INSERT/UPDATE statement on the database and returns the row count.
+
+	@param {String} expression - The prepared statement to be executed.
+	@param {Array} parameters - The parameters for the prepared statement.
+	@param {DatabaseConnection} dbConn - Optionally provide a specific connection object.
+	@return {int} A count of the number of updated rows.
+*/
+function executeUpdate(expression, parameters, dbConn) {
+	return executeOperation(&apos;executeUpdate&apos;, expression, parameters, dbConn);
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>23d0fa52-0d56-4e9a-82a5-56a6a3d55e43</id>
+      <name>FHIR DB - Get Connection</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1528395609258</time>
+        <timezone>GMT</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>CHANNEL_ATTACHMENT</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>CHANNEL_POSTPROCESSOR</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Retrieves the FHIR database connection from the global channel map, creating a new one if necessary.
+
+	@param {Boolean} recreate - If true, the connection will always be closed and created anew.
+	@return {DatabaseConnection} The database connection object.
+*/
+function getFHIRDBConnection(recreate) {
+	var dbConn = $gc(&apos;dbConn&apos;);
+
+	if (!dbConn || recreate) {
+		if (dbConn) {
+			try {
+				dbConn.close();
+			} catch (e) {}
+		}
+		dbConn = createFHIRDBConnection();
+		$gc(&apos;dbConn&apos;, dbConn);
+	}
+
+	return dbConn;
+}
+
+function createFHIRDBConnection() {
+	return DatabaseConnectionFactory.createDatabaseConnection($(&apos;fhirDBDriver&apos;), $(&apos;fhirDBUrl&apos;), $(&apos;fhirDBUsername&apos;), $(&apos;fhirDBPassword&apos;));
+}
+
+function executeOperation(operation, expression, parameters, dbConn) {
+	var createDbConn = typeof dbConn == &apos;undefined&apos;;
+	if (createDbConn) {
+		dbConn = getFHIRDBConnection();
+	}
+	var attempts = 0;
+	var maxAttempts = NumberUtils.toInt($(&apos;fhirDBMaxRetries&apos;) + &apos;&apos;, 0) + 1;
+
+	while (attempts &lt; maxAttempts) {
+		attempts++;
+
+		try {
+			if (parameters) {
+				for (var i in parameters) {
+					var param = parameters[i];
+					if (param instanceof Number) {
+						parameters[i] = new java.lang.Integer(param);
+					} else if (param instanceof java.util.Date) {
+						parameters[i] = convertDateParameter(param);
+					}
+				}
+				
+				return dbConn[operation](expression, java.util.Arrays.asList(parameters));
+			} else {
+				return dbConn[operation](expression);
+			}
+		} catch (e) {
+			logger.info(&apos;Error executing statement, checking if valid...&apos;);
+			var throwException = false;
+
+			try {
+				dbConn.executeCachedQuery(&apos;SELECT 1&apos;);
+			} catch (e2) {
+				if (createDbConn) {
+					logger.info(&apos;Connection invalid, recreating...&apos;);
+	
+					try {
+						dbConn = getFHIRDBConnection(true);
+					} catch (e3) {
+						throwException = true;
+					}
+				} else {
+					throwException = true;
+				}
+			}
+
+			if (attempts &gt;= maxAttempts) {
+				throwException = true;
+			}
+
+			if (throwException) {
+				var errorMessage = &apos;Unable to execute statement.\n&apos;;
+				errorMessage += &apos;Expression: &apos; + expression + &apos;\n&apos;;
+				if (parameters) {
+					errorMessage += &apos;Parameters: &apos; + java.util.Arrays.asList(parameters).toString();
+				}
+				logger.error(errorMessage, e.javaException);
+				throw e;
+			}
+
+			java.lang.Thread.sleep(1000);
+		}
+	}
+}
+
+function convertDateParameter(date) {
+	var dbType = $cfg(&apos;fhirDBDatabaseType&apos;);
+
+	if (dbType == &apos;postgres&apos;) {
+		return new java.sql.Timestamp(date.getTime());
+	} else if (dbType == &apos;sqlserver&apos;) {
+		return convertDate(date, &apos;yyyy-MM-dd HH:mm:ss.SSSZZ&apos;);
+	} else {
+		throw &apos;Unsupported DB type: &apos; + dbType;
+	}
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>269ac003-07f8-4914-9572-b2433afa116a</id>
+      <name>Get ResultSet Date</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1528395618353</time>
+        <timezone>GMT</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Retrives the java.util.Date value for a particular column from a ResultSet. Handles cases where the
+	object returned from the ResultSet is a string.
+
+	@param {ResultSet} resultSet - The ResultSet object to retrieve from.
+	@param {String} columnName - The name or alias of the column to retrieve.
+	@return {Date} The java.util.Date value.
+*/
+function getResultSetDate(resultSet, columnName) {
+	var obj = resultSet.getObject(columnName);
+	if (obj != null) {
+		if (obj instanceof java.lang.String) {
+			obj = getDate(obj);
+		}
+	}
+	return obj;
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>278733a7-de15-4324-bfa0-2034ae868afd</id>
+      <name>Get ResultSet String</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1528395610268</time>
+        <timezone>GMT</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Retrives the string value for a particular column from a ResultSet. Handles instances of
+	java.sql.Clob and java.sql.Blob as well (with the JVM default charset).
+
+	@param {ResultSet} resultSet - The ResultSet object to retrieve from.
+	@param {String} columnName - The name or alias of the column to retrieve.
+	@return {String} The string value.
+*/
+function getResultSetString(resultSet, columnName) {
+	var obj = resultSet.getObject(columnName);
+	if (obj != null) {
+		if (obj instanceof java.sql.Clob) {
+			obj = org.apache.commons.io.IOUtils.toString(obj.getCharacterStream());
+		} else if (obj instanceof java.sql.Blob) {
+			obj = org.apache.commons.io.IOUtils.toString(obj.getBinaryStream());
+		} else {
+			obj = java.lang.String.valueOf(obj);
+		}
+	}
+	return obj;
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>62e254fc-a206-41b2-bf9f-e9c55cb49ef1</id>
+      <name>History Utility Methods</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1528395615325</time>
+        <timezone>GMT</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	These functions are used with the history interaction.
+*/
+function getFhirHistoryBaseQuery() {
+	var dbType = $cfg(&apos;fhirDBDatabaseType&apos;);
+	if (dbType == &apos;postgres&apos;) {
+		return &quot;SELECT name, id, version, data::TEXT, mimetype, deleted, request_method, request_url FROM resource&quot;;
+	} else if (dbType == &apos;sqlserver&apos;) {
+		return &quot;SELECT name, id, version, CAST(data AS NVARCHAR(MAX)) AS data, mimetype, deleted, request_method, request_url FROM resource&quot;;
+	} else {
+		throw &apos;Unsupported DB type: &apos; + dbType;
+	}
+}
+
+function getFhirHistorySinceWherePart() {
+	var dbType = $cfg(&apos;fhirDBDatabaseType&apos;);
+	if (dbType == &apos;postgres&apos;) {
+		return &quot;last_modified &gt;= ?::TIMESTAMP WITH TIME ZONE&quot;;
+	} else if (dbType == &apos;sqlserver&apos;) {
+		return &quot;last_modified &gt;= CAST(? AS DATETIME)&quot;;
+	} else {
+		throw &apos;Unsupported DB type: &apos; + dbType;
+	}
+}
+</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>a67e8be3-11a3-4403-aaa7-ea495a98af23</id>
+      <name>Insert Deleted Resource</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1528395612289</time>
+        <timezone>GMT</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Inserts a deleted entry for a resource and returns its DB sequence ID.
+
+	@param {String} type - The FHIR resource type.
+	@param {String} id - The logical ID of the resource.
+	@param {Number} versionId - The version ID of the resource.
+	@param {Date} lastUpdated - The last updated time of the resource.
+	@param {String} method - The HTTP method used to create the resource.
+	@param {String} url - The HTTP URL used to create the resource.
+	@return {Number} The database sequence ID for the inserted resource.
+*/
+function insertFhirDeletedResource(type, id, versionId, lastUpdated, method, url) {
+	var dbType = $cfg(&apos;fhirDBDatabaseType&apos;);
+
+	if (dbType == &apos;postgres&apos;) {
+		var params = [type, id, versionId, lastUpdated, $(&apos;method&apos;), $(&apos;url&apos;)];
+		var result = executeUpdateAndGetGeneratedKeys(&quot;INSERT INTO resource (name, id, version, last_modified, deleted, request_method, request_url) VALUES (?, ?, ?, ?, TRUE, ?, ?)&quot;, params);
+		result.next();
+		return result.getInt(1);
+	} else if (dbType == &apos;sqlserver&apos;) {
+		var dbConn = createFHIRDBConnection();
+		
+		try {
+			dbConn.setAutoCommit(false);
+			
+			var idResult = executeCachedQuery(&apos;SELECT id FROM resource_sequence WITH (UPDLOCK)&apos;, [], dbConn);
+			idResult.next();
+			var sequenceId = idResult.getInt(1);
+			executeUpdate(&apos;UPDATE resource_sequence SET ID = ID + 1&apos;, [], dbConn);
+			dbConn.commit();
+
+			var params = [sequenceId, type, id, versionId, lastUpdated, $(&apos;method&apos;), $(&apos;url&apos;)];
+			executeUpdate(&quot;INSERT INTO resource (sequence_id, name, id, version, last_modified, deleted, request_method, request_url) VALUES (?, ?, ?, ?, ?, 1, ?, ?)&quot;, params, dbConn);
+			dbConn.commit();
+			
+			return sequenceId;
+		} catch (e) {
+			try { dbConn.rollback() } catch (e2) {}
+			throw e;
+		} finally {
+			try { dbConn.close() } catch (e) {}
+		}
+	} else {
+		throw &apos;Unsupported DB type: &apos; + dbType;
+	}
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>407c077f-579a-47af-bb78-1829cdd789c3</id>
+      <name>Insert Resource</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1528395620375</time>
+        <timezone>GMT</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Inserts a new resource and returns its DB sequence ID.
+
+	@param {String} type - The FHIR resource type.
+	@param {String} id - The logical ID of the resource.
+	@param {Number} versionId - The version ID of the resource.
+	@param {Date} lastUpdated - The last updated time of the resource.
+	@param {String} data - The resource data.
+	@param {String} contentType - The MIME type of the resource data.
+	@param {String} method - The HTTP method used to create the resource.
+	@param {String} url - The HTTP URL used to create the resource.
+	@return {Number} The database sequence ID for the inserted resource.
+*/
+function insertFhirResource(type, id, versionId, lastUpdated, data, contentType, method, url) {
+	var dbType = $cfg(&apos;fhirDBDatabaseType&apos;);
+
+	if (dbType == &apos;postgres&apos;) {
+		var params = [type, id, versionId, lastUpdated, data, contentType, method, url];
+		var result = executeUpdateAndGetGeneratedKeys(&quot;INSERT INTO resource (name, id, version, last_modified, data, mimetype, request_method, request_url) VALUES (?, ?, ?, ?, ?::XML, ?, ?, ?)&quot;, params);
+		result.next();
+		return result.getInt(1);
+	} else if (dbType == &apos;sqlserver&apos;) {
+		var dbConn = createFHIRDBConnection();
+		
+		try {
+			dbConn.setAutoCommit(false);
+			
+			var idResult = executeCachedQuery(&apos;SELECT id FROM resource_sequence WITH (UPDLOCK)&apos;, [], dbConn);
+			idResult.next();
+			var sequenceId = idResult.getInt(1);
+			executeUpdate(&apos;UPDATE resource_sequence SET ID = ID + 1&apos;, [], dbConn);
+			dbConn.commit();
+
+			var params = [sequenceId, type, id, versionId, lastUpdated, data, contentType, method, url];
+			executeUpdate(&quot;INSERT INTO resource (sequence_id, name, id, version, last_modified, data, mimetype, request_method, request_url) VALUES (?, ?, ?, ?, ?, CAST(? AS XML), ?, ?, ?)&quot;, params, dbConn);
+			dbConn.commit();
+			
+			return sequenceId;
+		} catch (e) {
+			try { dbConn.rollback() } catch (e2) {}
+			throw e;
+		} finally {
+			try { dbConn.close() } catch (e) {}
+		}
+	} else {
+		throw &apos;Unsupported DB type: &apos; + dbType;
+	}
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>f5c11e82-475f-4a53-a370-273a6027eba0</id>
+      <name>Search Utility Methods</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1528395605196</time>
+        <timezone>GMT</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	These functions are used with the search interaction.
+*/
+function getFhirSearchBaseQuery(usingLimit) {
+	var dbType = $cfg(&apos;fhirDBDatabaseType&apos;);
+	if (dbType == &apos;postgres&apos;) {
+		return &quot;SELECT name, id, version, data::TEXT, mimetype, request_method, request_url FROM resource r1 WHERE version = (SELECT MAX(version) FROM resource r2 WHERE r2.name = r1.name AND r2.id = r1.id) AND (deleted IS NULL OR deleted = FALSE)&quot;;
+	} else if (dbType == &apos;sqlserver&apos;) {
+		var query = &quot;SELECT name, id, version, CAST(data AS NVARCHAR(MAX)) AS data, mimetype, request_method, request_url&quot;;
+		if (usingLimit) {
+			query += &quot;, ROW_NUMBER() OVER (&quot; + getOrderClause() + &quot;) AS ROWNUM&quot;;
+		}
+		return query + &quot; FROM resource r1 WHERE version = (SELECT MAX(version) FROM resource r2 WHERE r2.name = r1.name AND r2.id = r1.id) AND (deleted IS NULL OR deleted = 0)&quot;;
+	} else {
+		throw &apos;Unsupported DB type: &apos; + dbType;
+	}
+}
+
+function getFhirSearchContentWherePart() {
+	var dbType = $cfg(&apos;fhirDBDatabaseType&apos;);
+	if (dbType == &apos;postgres&apos;) {
+		return &quot;data::TEXT ILIKE ?&quot;;
+	} else if (dbType == &apos;sqlserver&apos;) {
+		return &quot;UPPER(CAST(data AS NVARCHAR(MAX))) LIKE UPPER(?)&quot;;
+	} else {
+		throw &apos;Unsupported DB type: &apos; + dbType;
+	}
+}
+
+function getFhirSearchLastUpdatedWherePart(lastUpdatedOperator) {
+	var dbType = $cfg(&apos;fhirDBDatabaseType&apos;);
+	if (dbType == &apos;postgres&apos;) {
+		return &quot;last_modified &quot; + convertFhirParameterOperator(lastUpdatedOperator) + &quot; ?::TIMESTAMP WITH TIME ZONE&quot;;
+	} else if (dbType == &apos;sqlserver&apos;) {
+		return &quot;last_modified &quot; + convertFhirParameterOperator(lastUpdatedOperator) + &quot; CAST(? AS DATETIMEOFFSET)&quot;;
+	} else {
+		throw &apos;Unsupported DB type: &apos; + dbType;
+	}
+}
+
+function convertFhirParameterOperator(operator) {
+	switch ((operator + &apos;&apos;).toLowerCase()) {
+		case &apos;eq&apos;: return &apos;=&apos;;
+		case &apos;ne&apos;: return &apos;!=&apos;;
+		case &apos;gt&apos;: return &apos;&gt;&apos;;
+		case &apos;lt&apos;: return &apos;&lt;&apos;;
+		case &apos;ge&apos;: return &apos;&gt;=&apos;;
+		case &apos;le&apos;: return &apos;&lt;=&apos;;
+		case &apos;sa&apos;: return &apos;&gt;&apos;;
+		case &apos;eb&apos;: return &apos;&lt;&apos;;
+		case &apos;ap&apos;: return &apos;=&apos;;
+		default: return &apos;=&apos;;
+	}
+}
+
+function convertXPathNodeSingleton(node) {
+	var dbType = $cfg(&apos;fhirDBDatabaseType&apos;);
+	if (dbType == &apos;postgres&apos;) {
+		return node;
+	} else if (dbType == &apos;sqlserver&apos;) {
+		return node.split(&apos;/&apos;).join(&apos;[1]/&apos;);
+	} else {
+		throw &apos;Unsupported DB type: &apos; + dbType;
+	}
+}
+
+function xpathLowerCase(value) {
+	var dbType = $cfg(&apos;fhirDBDatabaseType&apos;);
+	if (dbType == &apos;postgres&apos;) {
+		return &quot;translate(&quot; + value + &quot;, &apos;ABCDEFGHIJKLMNOPQRSTUVWXYZ&apos;, &apos;abcdefghijklmnopqrstuvwxyz&apos;)&quot;;
+	} else if (dbType == &apos;sqlserver&apos;) {
+		return &quot;fn:lower-case(&quot; + value + &quot;)&quot;;
+	} else {
+		throw &apos;Unsupported DB type: &apos; + dbType;
+	}
+}
+
+function getFhirSearchXPathWherePart() {
+	var dbType = $cfg(&apos;fhirDBDatabaseType&apos;);
+	if (dbType == &apos;postgres&apos;) {
+		return &quot;XPATH_EXISTS(?, data)&quot;;
+	} else if (dbType == &apos;sqlserver&apos;) {
+		return &quot;data.exist(?) = 1&quot;;
+	} else {
+		throw &apos;Unsupported DB type: &apos; + dbType;
+	}
+}
+
+function addXPath(xpath, whereParts, params) {
+	var dbType = $cfg(&apos;fhirDBDatabaseType&apos;);
+	if (dbType == &apos;postgres&apos;) {
+		whereParts.push(getFhirSearchXPathWherePart());
+		params.push(xpath);
+	} else if (dbType == &apos;sqlserver&apos;) {
+		whereParts.push(getFhirSearchXPathWherePart().replace(&apos;?&apos;, &quot;&apos;&quot; + xpath.replace(/&apos;/g, &quot;&apos;&apos;&quot;) + &quot;&apos;&quot;));
+	} else {
+		throw &apos;Unsupported DB type: &apos; + dbType;
+	}
+}
+
+function addOrder(query, usingLimit) {
+	var dbType = $cfg(&apos;fhirDBDatabaseType&apos;);
+	if (dbType == &apos;postgres&apos;) {
+		return query + &quot; &quot; + getOrderClause();
+	} else if (dbType == &apos;sqlserver&apos;) {
+		if (usingLimit) {
+			return query;
+		} else {
+			return query + &quot; &quot; + getOrderClause();
+		}
+	} else {
+		throw &apos;Unsupported DB type: &apos; + dbType;
+	}
+}
+
+function getOrderClause() {
+	return &quot;ORDER BY name ASC, id ASC, version DESC&quot;;
+}
+
+function addLimit(query, limit) {
+	var dbType = $cfg(&apos;fhirDBDatabaseType&apos;);
+	if (dbType == &apos;postgres&apos;) {
+		return query + &quot; LIMIT &quot; + limit;
+	} else if (dbType == &apos;sqlserver&apos;) {
+		return &quot;SELECT A.* FROM (&quot; + query + &quot;) AS A WHERE A.ROWNUM &lt;= &quot; + limit;
+	} else {
+		throw &apos;Unsupported DB type: &apos; + dbType;
+	}
+}
+</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>785079c4-fc60-4e5c-a4ec-645cb3741560</id>
+      <name>Select Resource Instance</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1528395621385</time>
+        <timezone>GMT</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Returns a ResultSet for a specific resource instance.
+
+	@param {String} type - The FHIR resource type.
+	@param {String} id - The logical ID of the resource.
+	@return {ResultSet} The ResultSet.
+*/
+function getResource(type, id) {
+	var params = [type, id];
+	var dbType = $cfg(&apos;fhirDBDatabaseType&apos;);
+
+	if (dbType == &apos;postgres&apos;) {
+		return executeCachedQuery(&quot;SELECT version, data::TEXT, mimetype, last_modified, deleted FROM resource WHERE name = ? AND id = ? ORDER BY version DESC LIMIT 1&quot;, params);
+	} else if (dbType == &apos;sqlserver&apos;) {
+		return executeCachedQuery(&quot;SELECT TOP 1 version, CAST(data AS NVARCHAR(MAX)) AS data, mimetype, last_modified, deleted FROM resource WHERE name = ? AND id = ? ORDER BY version DESC&quot;, params);
+	} else {
+		throw &apos;Unsupported DB type: &apos; + dbType;
+	}
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>9411a28b-5f0d-4bc3-8acf-d892b5beb7db</id>
+      <name>Select Resource Instance by Version</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1528395606211</time>
+        <timezone>GMT</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Returns a ResultSet for a specific resource instance at a specific version.
+
+	@param {String} type - The FHIR resource type.
+	@param {String} id - The logical ID of the resource.
+	@param {Number} versionId - The version ID of the resource.
+	@return {ResultSet} The ResultSet.
+*/
+function getResourceVersion(type, id, versionId) {
+	var params = [type, id, parseInt(versionId, 10)];
+	var dbType = $cfg(&apos;fhirDBDatabaseType&apos;);
+
+	if (dbType == &apos;postgres&apos;) {
+		return executeCachedQuery(&quot;SELECT data::TEXT, mimetype, last_modified, deleted FROM resource WHERE name = ? AND id = ? AND version = ?&quot;, params);
+	} else if (dbType == &apos;sqlserver&apos;) {
+		return executeCachedQuery(&quot;SELECT CAST(data AS NVARCHAR(MAX)) AS data, mimetype, last_modified, deleted FROM resource WHERE name = ? AND id = ? AND version = ?&quot;, params);
+	} else {
+		throw &apos;Unsupported DB type: &apos; + dbType;
+	}
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>afe40f10-efc5-4014-833a-e96be7a422d1</id>
+      <name>Select Version</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1528395608242</time>
+        <timezone>GMT</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Returns the version ID for a given resource, or 0 if it doesn&apos;t exist.
+
+	@param {String} type - The FHIR resource type.
+	@param {String} id - The logical ID of the resource.
+	@return {Number} The version ID, or 0 if the resource doesn&apos;t exist.
+*/
+function getFhirVersion(type, id) {
+	var params = [type, id];
+	var result;
+
+	var dbType = $cfg(&apos;fhirDBDatabaseType&apos;);
+	if (dbType == &apos;postgres&apos;) {
+		result = executeCachedQuery(&quot;SELECT version FROM resource WHERE name = ? AND id = ? ORDER BY version DESC LIMIT 1&quot;, params);
+	} else if (dbType == &apos;sqlserver&apos;) {
+		result = executeCachedQuery(&quot;SELECT TOP 1 version FROM resource WHERE name = ? AND id = ? ORDER BY version DESC&quot;, params);
+	} else {
+		throw &apos;Unsupported DB type: &apos; + dbType;
+	}
+	
+	if (result.next()) {
+		return result.getInt(1);
+	}
+	return 0;
+}</code>
+      </properties>
+    </codeTemplate>
+    <codeTemplate version="3.6.0">
+      <id>2c822c38-30aa-4447-8e9e-9ea07e597c9d</id>
+      <name>Select Version and Deleted ResultSet</name>
+      <revision>1</revision>
+      <lastModified>
+        <time>1528395611277</time>
+        <timezone>GMT</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>/**
+	Returns a ResultSet with the version and deleted flag for a given resource.
+
+	@param {String} type - The FHIR resource type.
+	@param {String} id - The logical ID of the resource.
+	@return {ResultSet} The ResultSet.
+*/
+function getFhirVersionAndDeleted(type, id) {
+	var params = [type, id];
+	var dbType = $cfg(&apos;fhirDBDatabaseType&apos;);
+	if (dbType == &apos;postgres&apos;) {
+		return executeCachedQuery(&quot;SELECT version, deleted FROM resource WHERE name = ? AND id = ? ORDER BY version DESC LIMIT 1&quot;, params);
+	} else if (dbType == &apos;sqlserver&apos;) {
+		return executeCachedQuery(&quot;SELECT TOP 1 version, deleted FROM resource WHERE name = ? AND id = ? ORDER BY version DESC&quot;, params);
+	} else {
+		throw &apos;Unsupported DB type: &apos; + dbType;
+	}
+}</code>
+      </properties>
+    </codeTemplate>
+  </codeTemplates>
+</codeTemplateLibrary>

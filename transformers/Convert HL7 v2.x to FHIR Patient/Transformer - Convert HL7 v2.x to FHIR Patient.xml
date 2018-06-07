@@ -1,0 +1,1383 @@
+<transformer version="3.6.0">
+  <elements>
+    <com.mirth.connect.model.IteratorStep>
+      <name>For each msg[&apos;PID&apos;][&apos;PID.3&apos;]</name>
+      <sequenceNumber>0</sequenceNumber>
+      <properties>
+        <target>msg[&apos;PID&apos;][&apos;PID.3&apos;]</target>
+        <indexVariable>i</indexVariable>
+        <prefixSubstitutions>
+          <string>msg[&apos;PID&apos;][&apos;PID.3&apos;]</string>
+          <string>tmp[&apos;PID&apos;][&apos;PID.3&apos;]</string>
+        </prefixSubstitutions>
+        <children>
+          <com.mirth.connect.plugins.fhir.shared.FhirModelBuilderTransformerStep>
+            <name>Create Identifier</name>
+            <sequenceNumber>0-0</sequenceNumber>
+            <storeAsLocal>true</storeAsLocal>
+            <mapType>CHANNEL</mapType>
+            <variable>identifiers</variable>
+            <definition>Identifier</definition>
+            <model class="objectModel">
+              <usingBuilder>true</usingBuilder>
+              <properties class="linked-hash-map">
+                <entry>
+                  <string>use</string>
+                  <objectProperty>
+                    <enabled>false</enabled>
+                    <properties class="stringModel">
+                      <stringValue>usual</stringValue>
+                      <usingEnum>true</usingEnum>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>type</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="objectModel">
+                      <usingBuilder>true</usingBuilder>
+                      <properties class="linked-hash-map">
+                        <entry>
+                          <string>text</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>msg[&apos;PID&apos;][&apos;PID.3&apos;][i][&apos;PID.3.5&apos;].toString()</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                      </properties>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>system</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="stringModel">
+                      <stringValue>msg[&apos;PID&apos;][&apos;PID.3&apos;][i][&apos;PID.3.4&apos;].toString()</stringValue>
+                      <scriptExpression>true</scriptExpression>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>value</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="stringModel">
+                      <stringValue>msg[&apos;PID&apos;][&apos;PID.3&apos;][i][&apos;PID.3.1&apos;].toString()</stringValue>
+                      <scriptExpression>true</scriptExpression>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>period</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="objectModel">
+                      <usingBuilder>true</usingBuilder>
+                      <properties class="linked-hash-map">
+                        <entry>
+                          <string>start</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>convertToFhirTimestamp(msg[&apos;PID&apos;][&apos;PID.3&apos;][i][&apos;PID.3.7&apos;].toString())</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                        <entry>
+                          <string>end</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>convertToFhirTimestamp(msg[&apos;PID&apos;][&apos;PID.3&apos;][i][&apos;PID.3.8&apos;].toString())</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                      </properties>
+                    </properties>
+                  </objectProperty>
+                </entry>
+              </properties>
+            </model>
+          </com.mirth.connect.plugins.fhir.shared.FhirModelBuilderTransformerStep>
+        </children>
+      </properties>
+    </com.mirth.connect.model.IteratorStep>
+    <com.mirth.connect.model.IteratorStep>
+      <name>For each msg[&apos;PID&apos;][&apos;PID.5&apos;]</name>
+      <sequenceNumber>1</sequenceNumber>
+      <properties>
+        <target>msg[&apos;PID&apos;][&apos;PID.5&apos;]</target>
+        <indexVariable>i</indexVariable>
+        <prefixSubstitutions>
+          <string>msg[&apos;PID&apos;][&apos;PID.5&apos;]</string>
+          <string>tmp[&apos;PID&apos;][&apos;PID.5&apos;]</string>
+        </prefixSubstitutions>
+        <children>
+          <com.mirth.connect.plugins.fhir.shared.FhirModelBuilderTransformerStep>
+            <name>Create HumanName</name>
+            <sequenceNumber>1-0</sequenceNumber>
+            <storeAsLocal>true</storeAsLocal>
+            <mapType>CHANNEL</mapType>
+            <variable>names</variable>
+            <definition>HumanName</definition>
+            <model class="objectModel">
+              <usingBuilder>true</usingBuilder>
+              <properties class="linked-hash-map">
+                <entry>
+                  <string>use</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="stringModel">
+                      <stringValue>usual</stringValue>
+                      <usingEnum>true</usingEnum>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>family</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="stringModel">
+                      <stringValue>msg[&apos;PID&apos;][&apos;PID.5&apos;][i][&apos;PID.5.1&apos;].toString()</stringValue>
+                      <scriptExpression>true</scriptExpression>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>given</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="arrayModel">
+                      <usingBuilder>true</usingBuilder>
+                      <elements>
+                        <stringModel>
+                          <stringValue>msg[&apos;PID&apos;][&apos;PID.5&apos;][i][&apos;PID.5.2&apos;].toString()</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </stringModel>
+                        <stringModel>
+                          <stringValue>msg[&apos;PID&apos;][&apos;PID.5&apos;][i][&apos;PID.5.3&apos;].toString()</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </stringModel>
+                      </elements>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>prefix</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="arrayModel">
+                      <usingBuilder>true</usingBuilder>
+                      <elements>
+                        <stringModel>
+                          <stringValue>msg[&apos;PID&apos;][&apos;PID.5&apos;][i][&apos;PID.5.5&apos;].toString()</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </stringModel>
+                      </elements>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>suffix</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="arrayModel">
+                      <usingBuilder>true</usingBuilder>
+                      <elements>
+                        <stringModel>
+                          <stringValue>msg[&apos;PID&apos;][&apos;PID.5&apos;][i][&apos;PID.5.4&apos;].toString()</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </stringModel>
+                      </elements>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>period</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="objectModel">
+                      <usingBuilder>true</usingBuilder>
+                      <properties class="linked-hash-map">
+                        <entry>
+                          <string>start</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>convertToFhirTimestamp(msg[&apos;PID&apos;][&apos;PID.5&apos;][i][&apos;PID.5.12&apos;].toString())</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                        <entry>
+                          <string>end</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>convertToFhirTimestamp(msg[&apos;PID&apos;][&apos;PID.5&apos;][i][&apos;PID.5.13&apos;].toString())</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                      </properties>
+                    </properties>
+                  </objectProperty>
+                </entry>
+              </properties>
+            </model>
+          </com.mirth.connect.plugins.fhir.shared.FhirModelBuilderTransformerStep>
+        </children>
+      </properties>
+    </com.mirth.connect.model.IteratorStep>
+    <com.mirth.connect.model.IteratorStep>
+      <name>For each msg[&apos;PID&apos;][&apos;PID.9&apos;]</name>
+      <sequenceNumber>2</sequenceNumber>
+      <properties>
+        <target>msg[&apos;PID&apos;][&apos;PID.9&apos;]</target>
+        <indexVariable>i</indexVariable>
+        <prefixSubstitutions>
+          <string>msg[&apos;PID&apos;][&apos;PID.9&apos;]</string>
+          <string>tmp[&apos;PID&apos;][&apos;PID.9&apos;]</string>
+        </prefixSubstitutions>
+        <children>
+          <com.mirth.connect.plugins.fhir.shared.FhirModelBuilderTransformerStep>
+            <name>Create HumanName</name>
+            <sequenceNumber>2-0</sequenceNumber>
+            <storeAsLocal>true</storeAsLocal>
+            <mapType>CHANNEL</mapType>
+            <variable>aliases</variable>
+            <definition>HumanName</definition>
+            <model class="objectModel">
+              <usingBuilder>true</usingBuilder>
+              <properties class="linked-hash-map">
+                <entry>
+                  <string>use</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="stringModel">
+                      <stringValue>usual</stringValue>
+                      <usingEnum>true</usingEnum>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>family</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="stringModel">
+                      <stringValue>msg[&apos;PID&apos;][&apos;PID.9&apos;][i][&apos;PID.9.1&apos;].toString()</stringValue>
+                      <scriptExpression>true</scriptExpression>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>given</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="arrayModel">
+                      <usingBuilder>true</usingBuilder>
+                      <elements>
+                        <stringModel>
+                          <stringValue>msg[&apos;PID&apos;][&apos;PID.9&apos;][i][&apos;PID.9.2&apos;].toString()</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </stringModel>
+                        <stringModel>
+                          <stringValue>msg[&apos;PID&apos;][&apos;PID.9&apos;][i][&apos;PID.9.3&apos;].toString()</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </stringModel>
+                      </elements>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>prefix</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="arrayModel">
+                      <usingBuilder>true</usingBuilder>
+                      <elements>
+                        <stringModel>
+                          <stringValue>msg[&apos;PID&apos;][&apos;PID.9&apos;][i][&apos;PID.9.5&apos;].toString()</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </stringModel>
+                      </elements>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>suffix</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="arrayModel">
+                      <usingBuilder>true</usingBuilder>
+                      <elements>
+                        <stringModel>
+                          <stringValue>msg[&apos;PID&apos;][&apos;PID.9&apos;][i][&apos;PID.9.4&apos;].toString()</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </stringModel>
+                      </elements>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>period</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="objectModel">
+                      <usingBuilder>true</usingBuilder>
+                      <properties class="linked-hash-map">
+                        <entry>
+                          <string>start</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>convertToFhirTimestamp(msg[&apos;PID&apos;][&apos;PID.9&apos;][i][&apos;PID.9.12&apos;].toString())</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                        <entry>
+                          <string>end</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>convertToFhirTimestamp(msg[&apos;PID&apos;][&apos;PID.9&apos;][i][&apos;PID.9.13&apos;].toString())</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                      </properties>
+                    </properties>
+                  </objectProperty>
+                </entry>
+              </properties>
+            </model>
+          </com.mirth.connect.plugins.fhir.shared.FhirModelBuilderTransformerStep>
+        </children>
+      </properties>
+    </com.mirth.connect.model.IteratorStep>
+    <com.mirth.connect.model.IteratorStep>
+      <name>For each msg[&apos;PID&apos;][&apos;PID.13&apos;]</name>
+      <sequenceNumber>3</sequenceNumber>
+      <properties>
+        <target>msg[&apos;PID&apos;][&apos;PID.13&apos;]</target>
+        <indexVariable>i</indexVariable>
+        <prefixSubstitutions>
+          <string>msg[&apos;PID&apos;][&apos;PID.13&apos;]</string>
+          <string>tmp[&apos;PID&apos;][&apos;PID.13&apos;]</string>
+        </prefixSubstitutions>
+        <children>
+          <com.mirth.connect.plugins.fhir.shared.FhirModelBuilderTransformerStep>
+            <name>Create ContactPoint</name>
+            <sequenceNumber>3-0</sequenceNumber>
+            <storeAsLocal>true</storeAsLocal>
+            <mapType>CHANNEL</mapType>
+            <variable>homePhoneNumbers</variable>
+            <definition>ContactPoint</definition>
+            <model class="objectModel">
+              <usingBuilder>true</usingBuilder>
+              <properties class="linked-hash-map">
+                <entry>
+                  <string>system</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="stringModel">
+                      <stringValue>phone</stringValue>
+                      <usingEnum>true</usingEnum>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>value</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="stringModel">
+                      <stringValue>msg[&apos;PID&apos;][&apos;PID.13&apos;][i][&apos;PID.13.1&apos;].toString()</stringValue>
+                      <scriptExpression>true</scriptExpression>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>use</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="stringModel">
+                      <stringValue>home</stringValue>
+                      <usingEnum>true</usingEnum>
+                    </properties>
+                  </objectProperty>
+                </entry>
+              </properties>
+            </model>
+          </com.mirth.connect.plugins.fhir.shared.FhirModelBuilderTransformerStep>
+        </children>
+      </properties>
+    </com.mirth.connect.model.IteratorStep>
+    <com.mirth.connect.model.IteratorStep>
+      <name>For each msg[&apos;PID&apos;][&apos;PID.14&apos;]</name>
+      <sequenceNumber>4</sequenceNumber>
+      <properties>
+        <target>msg[&apos;PID&apos;][&apos;PID.14&apos;]</target>
+        <indexVariable>i</indexVariable>
+        <prefixSubstitutions>
+          <string>msg[&apos;PID&apos;][&apos;PID.14&apos;]</string>
+          <string>tmp[&apos;PID&apos;][&apos;PID.14&apos;]</string>
+        </prefixSubstitutions>
+        <children>
+          <com.mirth.connect.plugins.fhir.shared.FhirModelBuilderTransformerStep>
+            <name>Create ContactPoint</name>
+            <sequenceNumber>4-0</sequenceNumber>
+            <storeAsLocal>true</storeAsLocal>
+            <mapType>CHANNEL</mapType>
+            <variable>businessPhoneNumbers</variable>
+            <definition>ContactPoint</definition>
+            <model class="objectModel">
+              <usingBuilder>true</usingBuilder>
+              <properties class="linked-hash-map">
+                <entry>
+                  <string>system</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="stringModel">
+                      <stringValue>phone</stringValue>
+                      <usingEnum>true</usingEnum>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>value</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="stringModel">
+                      <stringValue>msg[&apos;PID&apos;][&apos;PID.14&apos;][i][&apos;PID.14.1&apos;].toString()</stringValue>
+                      <scriptExpression>true</scriptExpression>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>use</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="stringModel">
+                      <stringValue>work</stringValue>
+                      <usingEnum>true</usingEnum>
+                    </properties>
+                  </objectProperty>
+                </entry>
+              </properties>
+            </model>
+          </com.mirth.connect.plugins.fhir.shared.FhirModelBuilderTransformerStep>
+        </children>
+      </properties>
+    </com.mirth.connect.model.IteratorStep>
+    <com.mirth.connect.model.IteratorStep>
+      <name>For each msg[&apos;PID&apos;][&apos;PID.11&apos;]</name>
+      <sequenceNumber>5</sequenceNumber>
+      <properties>
+        <target>msg[&apos;PID&apos;][&apos;PID.11&apos;]</target>
+        <indexVariable>i</indexVariable>
+        <prefixSubstitutions>
+          <string>msg[&apos;PID&apos;][&apos;PID.11&apos;]</string>
+          <string>tmp[&apos;PID&apos;][&apos;PID.11&apos;]</string>
+        </prefixSubstitutions>
+        <children>
+          <com.mirth.connect.plugins.fhir.shared.FhirModelBuilderTransformerStep>
+            <name>Create Address</name>
+            <sequenceNumber>5-0</sequenceNumber>
+            <storeAsLocal>true</storeAsLocal>
+            <mapType>CHANNEL</mapType>
+            <variable>addresses</variable>
+            <definition>Address</definition>
+            <model class="objectModel">
+              <usingBuilder>true</usingBuilder>
+              <properties class="linked-hash-map">
+                <entry>
+                  <string>use</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="stringModel">
+                      <stringValue>convertAddressUse(msg[&apos;PID&apos;][&apos;PID.11&apos;][i][&apos;PID.11.7&apos;].toString())</stringValue>
+                      <scriptExpression>true</scriptExpression>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>type</string>
+                  <objectProperty>
+                    <enabled>false</enabled>
+                    <properties class="stringModel">
+                      <stringValue>postal</stringValue>
+                      <usingEnum>true</usingEnum>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>text</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="stringModel">
+                      <stringValue>(msg[&apos;PID&apos;][&apos;PID.11&apos;][i][&apos;PID.11.1&apos;].toString() + &apos; &apos; + msg[&apos;PID&apos;][&apos;PID.11&apos;][i][&apos;PID.11.2&apos;].toString() + &apos; &apos; + msg[&apos;PID&apos;][&apos;PID.11&apos;][i][&apos;PID.11.3&apos;].toString() + &apos; &apos; + msg[&apos;PID&apos;][&apos;PID.11&apos;][i][&apos;PID.11.4&apos;].toString() + &apos; &apos; + msg[&apos;PID&apos;][&apos;PID.11&apos;][i][&apos;PID.11.5&apos;].toString() + &apos; &apos; + msg[&apos;PID&apos;][&apos;PID.11&apos;][i][&apos;PID.11.6&apos;].toString()).trim()</stringValue>
+                      <scriptExpression>true</scriptExpression>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>line</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="arrayModel">
+                      <usingBuilder>true</usingBuilder>
+                      <elements>
+                        <stringModel>
+                          <stringValue>msg[&apos;PID&apos;][&apos;PID.11&apos;][i][&apos;PID.11.1&apos;].toString()</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </stringModel>
+                        <stringModel>
+                          <stringValue>msg[&apos;PID&apos;][&apos;PID.11&apos;][i][&apos;PID.11.2&apos;].toString()</stringValue>
+                          <scriptExpression>true</scriptExpression>
+                        </stringModel>
+                      </elements>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>city</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="stringModel">
+                      <stringValue>msg[&apos;PID&apos;][&apos;PID.11&apos;][i][&apos;PID.11.3&apos;].toString()</stringValue>
+                      <scriptExpression>true</scriptExpression>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>district</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="stringModel">
+                      <stringValue>msg[&apos;PID&apos;][&apos;PID.11&apos;][i][&apos;PID.11.9&apos;].toString()</stringValue>
+                      <scriptExpression>true</scriptExpression>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>state</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="stringModel">
+                      <stringValue>msg[&apos;PID&apos;][&apos;PID.11&apos;][i][&apos;PID.11.4&apos;].toString()</stringValue>
+                      <scriptExpression>true</scriptExpression>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>postalCode</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="stringModel">
+                      <stringValue>msg[&apos;PID&apos;][&apos;PID.11&apos;][i][&apos;PID.11.5&apos;].toString()</stringValue>
+                      <scriptExpression>true</scriptExpression>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>country</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="stringModel">
+                      <stringValue>msg[&apos;PID&apos;][&apos;PID.11&apos;][i][&apos;PID.11.6&apos;].toString()</stringValue>
+                      <scriptExpression>true</scriptExpression>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>period</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="objectModel">
+                      <usingBuilder>true</usingBuilder>
+                      <properties class="linked-hash-map">
+                        <entry>
+                          <string>start</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>convertToFhirTimestamp(msg[&apos;PID&apos;][&apos;PID.11&apos;][i][&apos;PID.11.13&apos;].toString())</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                        <entry>
+                          <string>end</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>convertToFhirTimestamp(msg[&apos;PID&apos;][&apos;PID.11&apos;][i][&apos;PID.11.14&apos;].toString())</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                      </properties>
+                    </properties>
+                  </objectProperty>
+                </entry>
+              </properties>
+            </model>
+          </com.mirth.connect.plugins.fhir.shared.FhirModelBuilderTransformerStep>
+        </children>
+      </properties>
+    </com.mirth.connect.model.IteratorStep>
+    <com.mirth.connect.model.IteratorStep>
+      <name>For each msg[&apos;NK1&apos;]</name>
+      <sequenceNumber>6</sequenceNumber>
+      <properties>
+        <target>msg[&apos;NK1&apos;]</target>
+        <indexVariable>i</indexVariable>
+        <prefixSubstitutions>
+          <string>msg[&apos;NK1&apos;]</string>
+          <string>tmp[&apos;NK1&apos;]</string>
+        </prefixSubstitutions>
+        <children>
+          <com.mirth.connect.model.IteratorStep>
+            <name>For each msg[&apos;NK1&apos;][i][&apos;NK1.5&apos;]</name>
+            <sequenceNumber>6-0</sequenceNumber>
+            <properties>
+              <target>msg[&apos;NK1&apos;][i][&apos;NK1.5&apos;]</target>
+              <indexVariable>j</indexVariable>
+              <prefixSubstitutions>
+                <string>msg[&apos;NK1&apos;][i][&apos;NK1.5&apos;]</string>
+                <string>tmp[&apos;NK1&apos;][i][&apos;NK1.5&apos;]</string>
+              </prefixSubstitutions>
+              <children>
+                <com.mirth.connect.plugins.fhir.shared.FhirModelBuilderTransformerStep>
+                  <name>Create ContactPoint</name>
+                  <sequenceNumber>6-0-0</sequenceNumber>
+                  <storeAsLocal>true</storeAsLocal>
+                  <mapType>CHANNEL</mapType>
+                  <variable>contactHomePhoneNumbers</variable>
+                  <definition>ContactPoint</definition>
+                  <model class="objectModel">
+                    <usingBuilder>true</usingBuilder>
+                    <properties class="linked-hash-map">
+                      <entry>
+                        <string>system</string>
+                        <objectProperty>
+                          <enabled>true</enabled>
+                          <properties class="stringModel">
+                            <stringValue>phone</stringValue>
+                            <usingEnum>true</usingEnum>
+                          </properties>
+                        </objectProperty>
+                      </entry>
+                      <entry>
+                        <string>value</string>
+                        <objectProperty>
+                          <enabled>true</enabled>
+                          <properties class="stringModel">
+                            <stringValue>msg[&apos;NK1&apos;][i][&apos;NK1.5&apos;][j][&apos;NK1.5.1&apos;].toString()</stringValue>
+                            <scriptExpression>true</scriptExpression>
+                          </properties>
+                        </objectProperty>
+                      </entry>
+                      <entry>
+                        <string>use</string>
+                        <objectProperty>
+                          <enabled>true</enabled>
+                          <properties class="stringModel">
+                            <stringValue>home</stringValue>
+                            <usingEnum>true</usingEnum>
+                          </properties>
+                        </objectProperty>
+                      </entry>
+                    </properties>
+                  </model>
+                </com.mirth.connect.plugins.fhir.shared.FhirModelBuilderTransformerStep>
+              </children>
+            </properties>
+          </com.mirth.connect.model.IteratorStep>
+        </children>
+      </properties>
+    </com.mirth.connect.model.IteratorStep>
+    <com.mirth.connect.model.IteratorStep>
+      <name>For each msg[&apos;NK1&apos;]</name>
+      <sequenceNumber>7</sequenceNumber>
+      <properties>
+        <target>msg[&apos;NK1&apos;]</target>
+        <indexVariable>i</indexVariable>
+        <prefixSubstitutions>
+          <string>msg[&apos;NK1&apos;]</string>
+          <string>tmp[&apos;NK1&apos;]</string>
+        </prefixSubstitutions>
+        <children>
+          <com.mirth.connect.model.IteratorStep>
+            <name>For each msg[&apos;NK1&apos;][i][&apos;NK1.6&apos;]</name>
+            <sequenceNumber>7-0</sequenceNumber>
+            <properties>
+              <target>msg[&apos;NK1&apos;][i][&apos;NK1.6&apos;]</target>
+              <indexVariable>j</indexVariable>
+              <prefixSubstitutions>
+                <string>msg[&apos;NK1&apos;][i][&apos;NK1.6&apos;]</string>
+                <string>tmp[&apos;NK1&apos;][i][&apos;NK1.6&apos;]</string>
+              </prefixSubstitutions>
+              <children>
+                <com.mirth.connect.plugins.fhir.shared.FhirModelBuilderTransformerStep>
+                  <name>Create ContactPoint</name>
+                  <sequenceNumber>7-0-0</sequenceNumber>
+                  <storeAsLocal>true</storeAsLocal>
+                  <mapType>CHANNEL</mapType>
+                  <variable>contactBusinessPhoneNumbers</variable>
+                  <definition>ContactPoint</definition>
+                  <model class="objectModel">
+                    <usingBuilder>true</usingBuilder>
+                    <properties class="linked-hash-map">
+                      <entry>
+                        <string>system</string>
+                        <objectProperty>
+                          <enabled>true</enabled>
+                          <properties class="stringModel">
+                            <stringValue>phone</stringValue>
+                            <usingEnum>true</usingEnum>
+                          </properties>
+                        </objectProperty>
+                      </entry>
+                      <entry>
+                        <string>value</string>
+                        <objectProperty>
+                          <enabled>true</enabled>
+                          <properties class="stringModel">
+                            <stringValue>msg[&apos;NK1&apos;][i][&apos;NK1.6&apos;][j][&apos;NK1.6.1&apos;].toString()</stringValue>
+                            <scriptExpression>true</scriptExpression>
+                          </properties>
+                        </objectProperty>
+                      </entry>
+                      <entry>
+                        <string>use</string>
+                        <objectProperty>
+                          <enabled>true</enabled>
+                          <properties class="stringModel">
+                            <stringValue>work</stringValue>
+                            <usingEnum>true</usingEnum>
+                          </properties>
+                        </objectProperty>
+                      </entry>
+                    </properties>
+                  </model>
+                </com.mirth.connect.plugins.fhir.shared.FhirModelBuilderTransformerStep>
+              </children>
+            </properties>
+          </com.mirth.connect.model.IteratorStep>
+        </children>
+      </properties>
+    </com.mirth.connect.model.IteratorStep>
+    <com.mirth.connect.model.IteratorStep>
+      <name>For each msg[&apos;NK1&apos;]</name>
+      <sequenceNumber>8</sequenceNumber>
+      <properties>
+        <target>msg[&apos;NK1&apos;]</target>
+        <indexVariable>i</indexVariable>
+        <prefixSubstitutions>
+          <string>msg[&apos;NK1&apos;]</string>
+          <string>tmp[&apos;NK1&apos;]</string>
+        </prefixSubstitutions>
+        <children>
+          <com.mirth.connect.plugins.fhir.shared.FhirModelBuilderTransformerStep>
+            <name>Create Patient_Contact</name>
+            <sequenceNumber>8-0</sequenceNumber>
+            <storeAsLocal>true</storeAsLocal>
+            <mapType>CHANNEL</mapType>
+            <variable>contacts</variable>
+            <definition>Patient_Contact</definition>
+            <model class="objectModel">
+              <usingBuilder>true</usingBuilder>
+              <properties class="linked-hash-map">
+                <entry>
+                  <string>relationship</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="arrayModel">
+                      <usingBuilder>true</usingBuilder>
+                      <elements>
+                        <objectModel>
+                          <usingBuilder>true</usingBuilder>
+                          <properties class="linked-hash-map">
+                            <entry>
+                              <string>text</string>
+                              <objectProperty>
+                                <enabled>true</enabled>
+                                <properties class="stringModel">
+                                  <stringValue>msg[&apos;NK1&apos;][i][&apos;NK1.3&apos;][&apos;NK1.3.2&apos;].toString()</stringValue>
+                                  <scriptExpression>true</scriptExpression>
+                                </properties>
+                              </objectProperty>
+                            </entry>
+                            <entry>
+                              <string>id</string>
+                              <objectProperty>
+                                <enabled>true</enabled>
+                                <properties class="stringModel">
+                                  <stringValue>msg[&apos;NK1&apos;][i][&apos;NK1.3&apos;][&apos;NK1.3.1&apos;].toString()</stringValue>
+                                  <scriptExpression>true</scriptExpression>
+                                </properties>
+                              </objectProperty>
+                            </entry>
+                          </properties>
+                        </objectModel>
+                        <objectModel>
+                          <usingBuilder>true</usingBuilder>
+                          <properties class="linked-hash-map">
+                            <entry>
+                              <string>text</string>
+                              <objectProperty>
+                                <enabled>true</enabled>
+                                <properties class="stringModel">
+                                  <stringValue>msg[&apos;NK1&apos;][i][&apos;NK1.7&apos;][&apos;NK1.7.2&apos;].toString()</stringValue>
+                                  <scriptExpression>true</scriptExpression>
+                                </properties>
+                              </objectProperty>
+                            </entry>
+                            <entry>
+                              <string>id</string>
+                              <objectProperty>
+                                <enabled>true</enabled>
+                                <properties class="stringModel">
+                                  <stringValue>msg[&apos;NK1&apos;][i][&apos;NK1.7&apos;][&apos;NK1.7.1&apos;].toString()</stringValue>
+                                  <scriptExpression>true</scriptExpression>
+                                </properties>
+                              </objectProperty>
+                            </entry>
+                          </properties>
+                        </objectModel>
+                      </elements>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>name</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="objectModel">
+                      <usingBuilder>true</usingBuilder>
+                      <properties class="linked-hash-map">
+                        <entry>
+                          <string>use</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>usual</stringValue>
+                              <usingEnum>true</usingEnum>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                        <entry>
+                          <string>family</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>msg[&apos;NK1&apos;][i][&apos;NK1.2&apos;][&apos;NK1.2.1&apos;].toString()</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                        <entry>
+                          <string>given</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="arrayModel">
+                              <usingBuilder>true</usingBuilder>
+                              <elements>
+                                <stringModel>
+                                  <stringValue>msg[&apos;NK1&apos;][i][&apos;NK1.2&apos;][&apos;NK1.2.2&apos;].toString()</stringValue>
+                                  <scriptExpression>true</scriptExpression>
+                                </stringModel>
+                                <stringModel>
+                                  <stringValue>msg[&apos;NK1&apos;][i][&apos;NK1.2&apos;][&apos;NK1.2.3&apos;].toString()</stringValue>
+                                  <scriptExpression>true</scriptExpression>
+                                </stringModel>
+                              </elements>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                        <entry>
+                          <string>prefix</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="arrayModel">
+                              <usingBuilder>true</usingBuilder>
+                              <elements>
+                                <stringModel>
+                                  <stringValue>msg[&apos;NK1&apos;][i][&apos;NK1.2&apos;][&apos;NK1.2.5&apos;].toString()</stringValue>
+                                  <scriptExpression>true</scriptExpression>
+                                </stringModel>
+                              </elements>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                        <entry>
+                          <string>suffix</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="arrayModel">
+                              <usingBuilder>true</usingBuilder>
+                              <elements>
+                                <stringModel>
+                                  <stringValue>msg[&apos;NK1&apos;][i][&apos;NK1.2&apos;][&apos;NK1.2.4&apos;].toString()</stringValue>
+                                  <scriptExpression>true</scriptExpression>
+                                </stringModel>
+                              </elements>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                        <entry>
+                          <string>period</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="objectModel">
+                              <usingBuilder>true</usingBuilder>
+                              <properties class="linked-hash-map">
+                                <entry>
+                                  <string>start</string>
+                                  <objectProperty>
+                                    <enabled>true</enabled>
+                                    <properties class="stringModel">
+                                      <stringValue>convertToFhirTimestamp(msg[&apos;NK1&apos;][i][&apos;NK1.2&apos;][&apos;NK1.2.12&apos;].toString())</stringValue>
+                                      <scriptExpression>true</scriptExpression>
+                                    </properties>
+                                  </objectProperty>
+                                </entry>
+                                <entry>
+                                  <string>end</string>
+                                  <objectProperty>
+                                    <enabled>true</enabled>
+                                    <properties class="stringModel">
+                                      <stringValue>convertToFhirTimestamp(msg[&apos;NK1&apos;][i][&apos;NK1.2&apos;][&apos;NK1.2.13&apos;].toString())</stringValue>
+                                      <scriptExpression>true</scriptExpression>
+                                    </properties>
+                                  </objectProperty>
+                                </entry>
+                              </properties>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                      </properties>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>telecom</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="arrayModel">
+                      <stringValue>combineArrays(contactHomePhoneNumbers, contactBusinessPhoneNumbers)</stringValue>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>address</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="objectModel">
+                      <usingBuilder>true</usingBuilder>
+                      <properties class="linked-hash-map">
+                        <entry>
+                          <string>use</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>convertAddressUse(msg[&apos;NK1&apos;][i][&apos;NK1.4&apos;][&apos;NK1.4.7&apos;].toString())</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                        <entry>
+                          <string>type</string>
+                          <objectProperty>
+                            <enabled>false</enabled>
+                            <properties class="stringModel">
+                              <stringValue>postal</stringValue>
+                              <usingEnum>true</usingEnum>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                        <entry>
+                          <string>text</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>(msg[&apos;NK1&apos;][i][&apos;NK1.4&apos;][&apos;NK1.4.1&apos;].toString() + &apos; &apos; + msg[&apos;NK1&apos;][i][&apos;NK1.4&apos;][&apos;NK1.4.2&apos;].toString() + &apos; &apos; + msg[&apos;NK1&apos;][i][&apos;NK1.4&apos;][&apos;NK1.4.3&apos;].toString() + &apos; &apos; + msg[&apos;NK1&apos;][i][&apos;NK1.4&apos;][&apos;NK1.4.4&apos;].toString() + &apos; &apos; + msg[&apos;NK1&apos;][i][&apos;NK1.4&apos;][&apos;NK1.4.5&apos;].toString() + &apos; &apos; + msg[&apos;NK1&apos;][i][&apos;NK1.4&apos;][&apos;NK1.4.6&apos;].toString()).trim()</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                        <entry>
+                          <string>line</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="arrayModel">
+                              <usingBuilder>true</usingBuilder>
+                              <elements>
+                                <stringModel>
+                                  <stringValue>msg[&apos;NK1&apos;][i][&apos;NK1.4&apos;][&apos;NK1.4.1&apos;].toString()</stringValue>
+                                  <scriptExpression>true</scriptExpression>
+                                </stringModel>
+                                <stringModel>
+                                  <stringValue>msg[&apos;NK1&apos;][i][&apos;NK1.4&apos;][&apos;NK1.4.2&apos;].toString()</stringValue>
+                                  <scriptExpression>true</scriptExpression>
+                                </stringModel>
+                              </elements>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                        <entry>
+                          <string>city</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>msg[&apos;NK1&apos;][i][&apos;NK1.4&apos;][&apos;NK1.4.3&apos;].toString()</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                        <entry>
+                          <string>district</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>msg[&apos;NK1&apos;][i][&apos;NK1.4&apos;][&apos;NK1.4.9&apos;].toString()</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                        <entry>
+                          <string>state</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>msg[&apos;NK1&apos;][i][&apos;NK1.4&apos;][&apos;NK1.4.4&apos;].toString()</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                        <entry>
+                          <string>postalCode</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>msg[&apos;NK1&apos;][i][&apos;NK1.4&apos;][&apos;NK1.4.5&apos;].toString()</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                        <entry>
+                          <string>country</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="stringModel">
+                              <stringValue>msg[&apos;NK1&apos;][i][&apos;NK1.4&apos;][&apos;NK1.4.6&apos;].toString()</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                        <entry>
+                          <string>period</string>
+                          <objectProperty>
+                            <enabled>true</enabled>
+                            <properties class="objectModel">
+                              <usingBuilder>true</usingBuilder>
+                              <properties class="linked-hash-map">
+                                <entry>
+                                  <string>start</string>
+                                  <objectProperty>
+                                    <enabled>true</enabled>
+                                    <properties class="stringModel">
+                                      <stringValue>convertToFhirTimestamp(msg[&apos;NK1&apos;][i][&apos;NK1.4&apos;][&apos;NK1.4.13&apos;].toString())</stringValue>
+                                      <scriptExpression>true</scriptExpression>
+                                    </properties>
+                                  </objectProperty>
+                                </entry>
+                                <entry>
+                                  <string>end</string>
+                                  <objectProperty>
+                                    <enabled>true</enabled>
+                                    <properties class="stringModel">
+                                      <stringValue>convertToFhirTimestamp(msg[&apos;NK1&apos;][i][&apos;NK1.4&apos;][&apos;NK1.4.14&apos;].toString())</stringValue>
+                                      <scriptExpression>true</scriptExpression>
+                                    </properties>
+                                  </objectProperty>
+                                </entry>
+                              </properties>
+                            </properties>
+                          </objectProperty>
+                        </entry>
+                      </properties>
+                    </properties>
+                  </objectProperty>
+                </entry>
+                <entry>
+                  <string>gender</string>
+                  <objectProperty>
+                    <enabled>true</enabled>
+                    <properties class="stringModel">
+                      <stringValue>convertToFhirGender(msg[&apos;NK1&apos;][i][&apos;NK1.15&apos;][&apos;NK1.15.1&apos;].toString())</stringValue>
+                      <scriptExpression>true</scriptExpression>
+                    </properties>
+                  </objectProperty>
+                </entry>
+              </properties>
+            </model>
+          </com.mirth.connect.plugins.fhir.shared.FhirModelBuilderTransformerStep>
+        </children>
+      </properties>
+    </com.mirth.connect.model.IteratorStep>
+    <com.mirth.connect.plugins.fhir.shared.FhirModelBuilderTransformerStep>
+      <name>Create Patient</name>
+      <sequenceNumber>9</sequenceNumber>
+      <storeAsLocal>true</storeAsLocal>
+      <mapType>CHANNEL</mapType>
+      <variable>patient</variable>
+      <definition>Patient</definition>
+      <model class="objectModel">
+        <usingBuilder>true</usingBuilder>
+        <properties class="linked-hash-map">
+          <entry>
+            <string>resourceType</string>
+            <objectProperty>
+              <enabled>true</enabled>
+              <properties class="stringModel">
+                <stringValue>Patient</stringValue>
+                <usingEnum>true</usingEnum>
+              </properties>
+            </objectProperty>
+          </entry>
+          <entry>
+            <string>identifier</string>
+            <objectProperty>
+              <enabled>true</enabled>
+              <properties class="arrayModel">
+                <stringValue>identifiers</stringValue>
+              </properties>
+            </objectProperty>
+          </entry>
+          <entry>
+            <string>name</string>
+            <objectProperty>
+              <enabled>true</enabled>
+              <properties class="arrayModel">
+                <stringValue>combineArrays(names, aliases)</stringValue>
+              </properties>
+            </objectProperty>
+          </entry>
+          <entry>
+            <string>telecom</string>
+            <objectProperty>
+              <enabled>true</enabled>
+              <properties class="arrayModel">
+                <stringValue>combineArrays(homePhoneNumbers, businessPhoneNumbers)</stringValue>
+              </properties>
+            </objectProperty>
+          </entry>
+          <entry>
+            <string>gender</string>
+            <objectProperty>
+              <enabled>true</enabled>
+              <properties class="stringModel">
+                <stringValue>convertToFhirGender(msg[&apos;PID&apos;][&apos;PID.8&apos;][&apos;PID.8.1&apos;].toString())</stringValue>
+                <scriptExpression>true</scriptExpression>
+              </properties>
+            </objectProperty>
+          </entry>
+          <entry>
+            <string>birthDate</string>
+            <objectProperty>
+              <enabled>true</enabled>
+              <properties class="stringModel">
+                <stringValue>convertToFhirDate(msg[&apos;PID&apos;][&apos;PID.7&apos;][&apos;PID.7.1&apos;].toString())</stringValue>
+                <scriptExpression>true</scriptExpression>
+              </properties>
+            </objectProperty>
+          </entry>
+          <entry>
+            <string>deceasedBoolean</string>
+            <objectProperty>
+              <enabled>true</enabled>
+              <properties class="booleanModel">
+                <stringValue>convertYesNoIndicator(msg[&apos;PID&apos;][&apos;PID.30&apos;][&apos;PID.30.1&apos;].toString())</stringValue>
+              </properties>
+            </objectProperty>
+          </entry>
+          <entry>
+            <string>deceasedDateTime</string>
+            <objectProperty>
+              <enabled>true</enabled>
+              <properties class="stringModel">
+                <stringValue>convertToFhirTimestamp(msg[&apos;PID&apos;][&apos;PID.29&apos;][&apos;PID.29.1&apos;].toString())</stringValue>
+                <scriptExpression>true</scriptExpression>
+              </properties>
+            </objectProperty>
+          </entry>
+          <entry>
+            <string>address</string>
+            <objectProperty>
+              <enabled>true</enabled>
+              <properties class="arrayModel">
+                <stringValue>addresses</stringValue>
+              </properties>
+            </objectProperty>
+          </entry>
+          <entry>
+            <string>maritalStatus</string>
+            <objectProperty>
+              <enabled>true</enabled>
+              <properties class="objectModel">
+                <usingBuilder>true</usingBuilder>
+                <properties class="linked-hash-map">
+                  <entry>
+                    <string>text</string>
+                    <objectProperty>
+                      <enabled>true</enabled>
+                      <properties class="stringModel">
+                        <stringValue>msg[&apos;PID&apos;][&apos;PID.16&apos;][&apos;PID.16.1&apos;].toString()</stringValue>
+                        <scriptExpression>true</scriptExpression>
+                      </properties>
+                    </objectProperty>
+                  </entry>
+                </properties>
+              </properties>
+            </objectProperty>
+          </entry>
+          <entry>
+            <string>multipleBirthBoolean</string>
+            <objectProperty>
+              <enabled>true</enabled>
+              <properties class="booleanModel">
+                <stringValue>convertYesNoIndicator(msg[&apos;PID&apos;][&apos;PID.24&apos;][&apos;PID.24.1&apos;].toString())</stringValue>
+              </properties>
+            </objectProperty>
+          </entry>
+          <entry>
+            <string>contact</string>
+            <objectProperty>
+              <enabled>true</enabled>
+              <properties class="arrayModel">
+                <stringValue>contacts</stringValue>
+              </properties>
+            </objectProperty>
+          </entry>
+          <entry>
+            <string>communication</string>
+            <objectProperty>
+              <enabled>true</enabled>
+              <properties class="arrayModel">
+                <usingBuilder>true</usingBuilder>
+                <elements>
+                  <objectModel>
+                    <usingBuilder>true</usingBuilder>
+                    <properties class="linked-hash-map">
+                      <entry>
+                        <string>language</string>
+                        <objectProperty>
+                          <enabled>true</enabled>
+                          <properties class="objectModel">
+                            <usingBuilder>true</usingBuilder>
+                            <properties class="linked-hash-map">
+                              <entry>
+                                <string>text</string>
+                                <objectProperty>
+                                  <enabled>true</enabled>
+                                  <properties class="stringModel">
+                                    <stringValue>msg[&apos;PID&apos;][&apos;PID.15&apos;][&apos;PID.15.2&apos;].toString()</stringValue>
+                                    <scriptExpression>true</scriptExpression>
+                                  </properties>
+                                </objectProperty>
+                              </entry>
+                              <entry>
+                                <string>id</string>
+                                <objectProperty>
+                                  <enabled>true</enabled>
+                                  <properties class="stringModel">
+                                    <stringValue>msg[&apos;PID&apos;][&apos;PID.15&apos;][&apos;PID.15.1&apos;].toString()</stringValue>
+                                    <scriptExpression>true</scriptExpression>
+                                  </properties>
+                                </objectProperty>
+                              </entry>
+                            </properties>
+                          </properties>
+                        </objectProperty>
+                      </entry>
+                    </properties>
+                  </objectModel>
+                </elements>
+              </properties>
+            </objectProperty>
+          </entry>
+        </properties>
+      </model>
+    </com.mirth.connect.plugins.fhir.shared.FhirModelBuilderTransformerStep>
+    <com.mirth.connect.plugins.javascriptstep.JavaScriptStep>
+      <name>Cleanup, and set msg</name>
+      <sequenceNumber>10</sequenceNumber>
+      <script>msg = consolidate(cleanupFhirPatient(patient));</script>
+    </com.mirth.connect.plugins.javascriptstep.JavaScriptStep>
+  </elements>
+  <inboundTemplate encoding="base64"></inboundTemplate>
+  <outboundTemplate encoding="base64"></outboundTemplate>
+  <inboundDataType>HL7V2</inboundDataType>
+  <outboundDataType>FHIR</outboundDataType>
+  <inboundProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2DataTypeProperties" version="3.6.0">
+    <serializationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2SerializationProperties" version="3.6.0">
+      <handleRepetitions>true</handleRepetitions>
+      <handleSubcomponents>true</handleSubcomponents>
+      <useStrictParser>false</useStrictParser>
+      <useStrictValidation>false</useStrictValidation>
+      <stripNamespaces>true</stripNamespaces>
+      <segmentDelimiter>\r</segmentDelimiter>
+      <convertLineBreaks>true</convertLineBreaks>
+    </serializationProperties>
+    <deserializationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2DeserializationProperties" version="3.6.0">
+      <useStrictParser>false</useStrictParser>
+      <useStrictValidation>false</useStrictValidation>
+      <segmentDelimiter>\r</segmentDelimiter>
+    </deserializationProperties>
+    <batchProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2BatchProperties" version="3.6.0">
+      <splitType>MSH_Segment</splitType>
+      <batchScript></batchScript>
+    </batchProperties>
+    <responseGenerationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2ResponseGenerationProperties" version="3.6.0">
+      <segmentDelimiter>\r</segmentDelimiter>
+      <successfulACKCode>AA</successfulACKCode>
+      <successfulACKMessage></successfulACKMessage>
+      <errorACKCode>AE</errorACKCode>
+      <errorACKMessage>An Error Occurred Processing Message.</errorACKMessage>
+      <rejectedACKCode>AR</rejectedACKCode>
+      <rejectedACKMessage>Message Rejected.</rejectedACKMessage>
+      <msh15ACKAccept>false</msh15ACKAccept>
+      <dateFormat>yyyyMMddHHmmss.SSS</dateFormat>
+    </responseGenerationProperties>
+    <responseValidationProperties class="com.mirth.connect.plugins.datatypes.hl7v2.HL7v2ResponseValidationProperties" version="3.6.0">
+      <successfulACKCode>AA,CA</successfulACKCode>
+      <errorACKCode>AE,CE</errorACKCode>
+      <rejectedACKCode>AR,CR</rejectedACKCode>
+      <validateMessageControlId>true</validateMessageControlId>
+      <originalMessageControlId>Destination_Encoded</originalMessageControlId>
+      <originalIdMapVariable></originalIdMapVariable>
+    </responseValidationProperties>
+  </inboundProperties>
+  <outboundProperties class="com.mirth.connect.plugins.datatypes.fhir.shared.FhirDataTypeProperties" version="3.6.0">
+    <serializationProperties class="com.mirth.connect.plugins.datatypes.fhir.shared.FhirSerializationProperties" version="3.6.0">
+      <serializationType>JSON</serializationType>
+    </serializationProperties>
+    <deserializationProperties class="com.mirth.connect.plugins.datatypes.fhir.shared.FhirDeserializationProperties" version="3.6.0">
+      <serializationType>JSON</serializationType>
+    </deserializationProperties>
+    <batchProperties class="com.mirth.connect.plugins.datatypes.fhir.shared.FhirBatchProperties" version="3.6.0">
+      <splitType>JavaScript</splitType>
+      <batchScript></batchScript>
+    </batchProperties>
+  </outboundProperties>
+</transformer>
