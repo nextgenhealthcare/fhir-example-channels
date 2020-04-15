@@ -1,4 +1,5 @@
 try {
+	var fhirVersion = $('fhirVersion');
 	var type = $('fhirType').toLowerCase();
 	var id = UUIDGenerator.getUUID();
 	var versionId = 1;
@@ -6,18 +7,18 @@ try {
 	var contentType = FhirUtil.getMIMETypeXML();
 	var preferReturn = getPreferValue();
 
-	var resource = FhirUtil.fromXML(data);
+	var resource = FhirUtil.fromXML(data, fhirVersion);
 	var resourceType = resource.getResourceType();
 
 	if (resourceType == null) {
-		return createOperationOutcome('error', 'invalid', 'Resource type unknown, cannot be created as a(n) ' + $('fhirType') + ' resource.');
+		return createOperationOutcome('error', 'invalid', 'Resource type unknown, cannot be created as a(n) ' + $('fhirType') + ' resource.', fhirVersion);
 	} else if (resourceType.toString().toLowerCase() != type) {
-		return createOperationOutcome('error', 'invalid', 'Resource type ' + resourceType + ' cannot be created as a(n) ' + $('fhirType') + ' resource.');
+		return createOperationOutcome('error', 'invalid', 'Resource type ' + resourceType + ' cannot be created as a(n) ' + $('fhirType') + ' resource.', fhirVersion);
 	}
 
 	var lastUpdated = updateResourceMeta(resource, id, versionId);
 
-	data = FhirUtil.toXML(resource).replaceAll('\\s*xmlns:?[^=]*\\s*=\\s*"http://hl7.org/fhir"', '');
+	data = FhirUtil.toXML(resource, fhirVersion).replaceAll('\\s*xmlns:?[^=]*\\s*=\\s*"http://hl7.org/fhir"', '');
 
 	insertFhirResource(type, id, versionId, lastUpdated, data, contentType, $('method'), $('url'));
 
@@ -38,5 +39,5 @@ try {
 	responseMap.put('response', response);
 	return response.getMessage();
 } catch (e) {
-	return createOperationOutcome('error', 'transient', 'Error creating resource.', 500, e);
+	return createOperationOutcome('error', 'transient', 'Error creating resource.', fhirVersion, 500, e);
 }

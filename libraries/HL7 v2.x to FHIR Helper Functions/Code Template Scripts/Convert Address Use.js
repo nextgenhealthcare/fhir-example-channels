@@ -13,19 +13,19 @@ function convertAddressUse(code) {
 		case 'M':
 		case 'P':
 		case 'SH':
-			fhirCode = org.hl7.fhir.dstu3.model.codesystems.AddressUse.HOME;
+			fhirCode = org.hl7.fhir.r4.model.codesystems.AddressUse.HOME;
 			break;
 		case 'B':
 		case 'O':
 		case 'BI':
-			fhirCode = org.hl7.fhir.dstu3.model.codesystems.AddressUse.WORK;
+			fhirCode = org.hl7.fhir.r4.model.codesystems.AddressUse.WORK;
 			break;
 		case 'C':
 		case 'V':
-			fhirCode = org.hl7.fhir.dstu3.model.codesystems.AddressUse.TEMP;
+			fhirCode = org.hl7.fhir.r4.model.codesystems.AddressUse.TEMP;
 			break;
 		default:
-			fhirCode = org.hl7.fhir.dstu3.model.codesystems.AddressUse.OLD;
+			fhirCode = org.hl7.fhir.r4.model.codesystems.AddressUse.OLD;
 	}
 
 	return fhirCode.toCode();

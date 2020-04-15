@@ -9,19 +9,19 @@ function convertToFhirGender(code) {
 	
 	switch ((code + '').toUpperCase()) {
 		case 'F':
-			fhirCode = org.hl7.fhir.dstu3.model.codesystems.AdministrativeGender.FEMALE;
+			fhirCode = org.hl7.fhir.r4.model.codesystems.AdministrativeGender.FEMALE;
 			break;
 		case 'M':
-			fhirCode = org.hl7.fhir.dstu3.model.codesystems.AdministrativeGender.MALE;
+			fhirCode = org.hl7.fhir.r4.model.codesystems.AdministrativeGender.MALE;
 			break;
 		case 'O':
 		case 'A':
 		case 'N':
-			fhirCode = org.hl7.fhir.dstu3.model.codesystems.AdministrativeGender.OTHER;
+			fhirCode = org.hl7.fhir.r4.model.codesystems.AdministrativeGender.OTHER;
 			break;
 		case 'U':
 		default:
-			fhirCode = org.hl7.fhir.dstu3.model.codesystems.AdministrativeGender.UNKNOWN;
+			fhirCode = org.hl7.fhir.r4.model.codesystems.AdministrativeGender.UNKNOWN;
 	}
 
 	return fhirCode.toCode();

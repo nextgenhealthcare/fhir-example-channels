@@ -1,4 +1,5 @@
 try {
+	var fhirVersion = $('fhirVersion');
 	var type = $('fhirType').toLowerCase();
 	var requestURL = $('url');
 	if (!requestURL.endsWith('/')) {
@@ -46,11 +47,11 @@ try {
 	}
 
 	// Uncomment this to reject requests with parameters that aren't supported
-//	for each (key in $('parameters').getKeys().toArray()) {
-//		if (supportedParameters.indexOf(key.toLowerCase()+'') < 0) {
-//			return createOperationOutcome('error', 'invalid', 'Unknown or unsupported parameter ' + key + '.');
-//		}
-//	}
+//  for each (key in $('parameters').getKeys().toArray()) {
+//	  if (supportedParameters.indexOf(key.toLowerCase()+'') < 0) {
+//		  return createOperationOutcome('error', 'invalid', 'Unknown or unsupported parameter ' + key + '.', fhirVersion);
+//	  }
+//  }
 
 	var _content = $('parameters').getParameter('_content');
 
@@ -66,7 +67,7 @@ try {
 			}
 			_lastUpdated = convertDate(_lastUpdated, 'yyyy-MM-dd HH:mm:ss.SSSZZ');
 		} catch (e) {
-			return createOperationOutcome('error', 'invalid', 'Parameter _lastUpdated formatted incorrectly: ' + _lastUpdated);
+			return createOperationOutcome('error', 'invalid', 'Parameter _lastUpdated formatted incorrectly: ' + _lastUpdated, fhirVersion);
 		}
 	}
 
@@ -74,7 +75,7 @@ try {
 	if (_count) {
 		_count = parseInt(_count, 10);
 		if (!_count) {
-			return createOperationOutcome('error', 'invalid', 'Parameter _count formatted incorrectly: ' + $('parameters').getParameter('_count'));
+			return createOperationOutcome('error', 'invalid', 'Parameter _count formatted incorrectly: ' + $('parameters').getParameter('_count'), fhirVersion);
 		}
 	}
 
@@ -148,7 +149,7 @@ try {
 	}
 
 	var result = executeCachedQuery(query, params);
-	var bundle = new Packages.org.hl7.fhir.dstu3.model.Bundle().setType(Packages.org.hl7.fhir.dstu3.model.Bundle.BundleType.SEARCHSET);
+	var bundle = new Packages.org.hl7.fhir.r4.model.Bundle().setType(Packages.org.hl7.fhir.r4.model.Bundle.BundleType.SEARCHSET);
 
 	while (result.next()) {
 		var entryType = getResultSetString(result, 'name');
@@ -159,12 +160,12 @@ try {
 		var entryRequestMethod = getResultSetString(result, 'request_method');
 		var entryRequestURL = getResultSetString(result, 'request_url');
 
-		var resourceType = FhirUtil.getResourceType(entryType);
+		var resourceType = FhirUtil.getResourceType(entryType, fhirVersion);
 		if (resourceType != null) {
 			entryType = resourceType.getPath();
 		}
 
-		var request = new Packages.org.hl7.fhir.dstu3.model.Bundle.BundleEntryRequestComponent().setMethod(new Packages.org.hl7.fhir.dstu3.model.Bundle.HTTPVerbEnumFactory().fromCode(entryRequestMethod)).setUrl(entryRequestURL);
+		var request = new Packages.org.hl7.fhir.r4.model.Bundle.BundleEntryRequestComponent().setMethod(new Packages.org.hl7.fhir.r4.model.Bundle.HTTPVerbEnumFactory().fromCode(entryRequestMethod)).setUrl(entryRequestURL);
 		var entry = bundle.addEntry().setRequest(request);
 	
 		var relativeUrl = type ? '' : (resourceType + '/');
@@ -172,16 +173,16 @@ try {
 			relativeUrl = '../' + relativeUrl;
 		}
 		entry.setFullUrl(requestURL.resolve(relativeUrl + entryId + '/_history/' + entryVersion).toString());
-		entry.setResource(FhirUtil.fromXML(entryData));
+		entry.setResource(FhirUtil.fromXML(entryData, fhirVersion));
 	}
 
 	bundle.setTotal(bundle.getEntry().size());;
 
-	var response = FhirResponseFactory.getHistoryResponse(FhirUtil.toXML(bundle), 200, FhirUtil.getMIMETypeXML());
+	var response = FhirResponseFactory.getHistoryResponse(FhirUtil.toXML(bundle, fhirVersion), 200, FhirUtil.getMIMETypeXML());
 	responseMap.put('response', response);
 	return response.getMessage();
 } catch (e) {
-	return createOperationOutcome('error', 'transient', 'Error searching resources.', 500, e);
+	return createOperationOutcome('error', 'transient', 'Error searching resources.', fhirVersion, 500, e);
 }
 
 /**

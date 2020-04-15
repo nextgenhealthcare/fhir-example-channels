@@ -1,33 +1,36 @@
-<codeTemplateLibrary version="3.6.0">
+<codeTemplateLibrary version="3.9.0">
   <id>a084db27-49e0-4c67-893b-ffcc9f1d6e94</id>
   <name>FHIR Helper Functions</name>
-  <revision>1</revision>
+  <revision>6</revision>
   <lastModified>
-    <time>1528396383212</time>
-    <timezone>GMT</timezone>
+    <time>1586485972938</time>
+    <timezone>America/Los_Angeles</timezone>
   </lastModified>
   <description>Other common helper functions used by the FHIR Listener channel.</description>
   <includeNewChannels>false</includeNewChannels>
   <enabledChannelIds>
     <string>1892f241-d643-4abb-b0af-b20b87e0cf12</string>
   </enabledChannelIds>
-  <disabledChannelIds/>
+  <disabledChannelIds>
+    <string>42e730bb-0721-435e-8dcf-d25d6d5d1dc6</string>
+    <string>e678dbf5-f021-43dc-84ae-967500d5c31a</string>
+  </disabledChannelIds>
   <codeTemplates>
-    <codeTemplate version="3.6.0">
+    <codeTemplate version="3.9.0">
       <id>d8e6f7a5-aeec-4025-a6d2-e568eb48e647</id>
       <name>Convert Date</name>
       <revision>1</revision>
       <lastModified>
-        <time>1528395617343</time>
-        <timezone>GMT</timezone>
+        <time>1586455859320</time>
+        <timezone>America/Los_Angeles</timezone>
       </lastModified>
       <contextSet>
         <delegate>
-          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
-          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
-          <contextType>SOURCE_RECEIVER</contextType>
-          <contextType>DESTINATION_DISPATCHER</contextType>
           <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
         </delegate>
       </contextSet>
       <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
@@ -100,103 +103,105 @@ function convertDate(date, outpattern) {
 }</code>
       </properties>
     </codeTemplate>
-    <codeTemplate version="3.6.0">
+    <codeTemplate version="3.9.0">
       <id>0e158aa1-77ee-465c-bb7a-13f4c8ecda13</id>
       <name>Create FHIR OperationOutcome</name>
-      <revision>1</revision>
+      <revision>6</revision>
       <lastModified>
-        <time>1528395623405</time>
-        <timezone>GMT</timezone>
+        <time>1586478731459</time>
+        <timezone>America/Los_Angeles</timezone>
       </lastModified>
       <contextSet>
         <delegate>
-          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
-          <contextType>CHANNEL_ATTACHMENT</contextType>
-          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
-          <contextType>SOURCE_RECEIVER</contextType>
           <contextType>CHANNEL_POSTPROCESSOR</contextType>
-          <contextType>DESTINATION_DISPATCHER</contextType>
           <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>CHANNEL_ATTACHMENT</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
         </delegate>
       </contextSet>
       <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
         <type>FUNCTION</type>
         <code>/**
-	Creates a FHIR OperationOutcome resource and adds it to the response map with the key &quot;response&quot;.
+    Creates a FHIR OperationOutcome resource and adds it to the response map with the key &quot;response&quot;.
 
-	@param {String} severity - Indicates whether the issue indicates a variation from successful
-		processing. Values: fatal | error | warning | information
-	@param {String} code - Describes the type of the issue. The system that creates an
-		OperationOutcome SHALL choose the most applicable code from the IssueType value set, and may
-		additional provide its own code for the error in the details element. Values: invalid | security |
-		processing | transient | informational
-	@param {String} details - Additional details about the error. This may be a text description of
-		the error, or a system code that identifies the error.
-	@param {int} httpStatusCode - The HTTP status code to send back with the response. Defaults to 400
-		if not specified.
-	@param {Error} e - If included, this will be used to build up the response status message and
-		error.
-	@param {Boolean} isFormatXML - If true, the resource will be formatted in XML. Otherwise, it will
-		be formatted in JSON. If not specified, it will attempt to find the _format parameter in the source
-		map, or return JSON.
-	@return {Response} The created Response object.
+    @param {String} severity - Indicates whether the issue indicates a variation from successful
+        processing. Values: fatal | error | warning | information
+    @param {String} code - Describes the type of the issue. The system that creates an
+        OperationOutcome SHALL choose the most applicable code from the IssueType value set, and may
+        additional provide its own code for the error in the details element. Values: invalid | security |
+        processing | transient | informational
+    @param {String} details - Additional details about the error. This may be a text description of
+        the error, or a system code that identifies the error.
+    @param {String} fhirVersion - The FHIR version of the OperationOutcome resource. Values: DSTU2 | DSTU2_1 | 
+    	   DSTU_HL7ORG | STU3 | R4 | R5
+    @param {int} httpStatusCode - The HTTP status code to send back with the response. Defaults to 400
+        if not specified.
+    @param {Error} e - If included, this will be used to build up the response status message and
+        error.
+    @param {Boolean} isFormatXML - If true, the resource will be formatted in XML. Otherwise, it will
+        be formatted in JSON. If not specified, it will attempt to find the _format parameter in the source
+        map, or return JSON.
+    @return {Response} The created Response object.
 */
-function createOperationOutcome(severity, code, details, httpStatusCode, e, isFormatXML) {
-	if (!httpStatusCode) {
-		httpStatusCode = 400;
-	}
+function createOperationOutcome(severity, code, details, fhirVersion, httpStatusCode, e, isFormatXML) {
+    if (!httpStatusCode) {
+        httpStatusCode = 400;
+    }
 
-	if (!isFormatXML &amp;&amp; $s(&apos;parameters&apos;) &amp;&amp; $s(&apos;parameters&apos;).contains(&apos;_format&apos;)) {
-		isFormatXML = !FhirUtil.isJSON($s(&apos;parameters&apos;).getParameter(&apos;_format&apos;));
-	}
+    if (!isFormatXML &amp;&amp; $s(&apos;parameters&apos;) &amp;&amp; $s(&apos;parameters&apos;).contains(&apos;_format&apos;)) {
+        isFormatXML = !FhirUtil.isJSON($s(&apos;parameters&apos;).getParameter(&apos;_format&apos;));
+    }
 
-	var outcome = FhirUtil.createOperationOutcome(severity, code, details);
-	var message = isFormatXML ? FhirUtil.toXML(outcome) : FhirUtil.toJSON(outcome);
-	responseMap.put(&apos;response&apos;, FhirResponseFactory.getResponse(message, httpStatusCode, isFormatXML ? FhirUtil.getMIMETypeXML() : FhirUtil.getMIMETypeJSON()));
-	var response = new Response(message);
-	response.setStatusMessage(severity.toUpperCase() + &apos; OperationOutcome created with status &apos; + httpStatusCode + &apos;.&apos;);
+    var outcome = FhirUtil.createOperationOutcome(severity, code, details, fhirVersion);
+    var message = isFormatXML ? FhirUtil.toXML(outcome, fhirVersion) : FhirUtil.toJSON(outcome, fhirVersion);
+    responseMap.put(&apos;response&apos;, FhirResponseFactory.getResponse(message, httpStatusCode, isFormatXML ? FhirUtil.getMIMETypeXML() : FhirUtil.getMIMETypeJSON()));
+    var response = new Response(message);
+    response.setStatusMessage(severity.toUpperCase() + &apos; OperationOutcome created with status &apos; + httpStatusCode + &apos;.&apos;);
 
-	if (httpStatusCode &gt;= 400) {
-		response.setStatus(Status.ERROR);
+    if (httpStatusCode &gt;= 400) {
+        response.setStatus(Status.ERROR);
 
-		if (e) {
-			var customMessage = &apos;Channel &apos; + channelName + &apos;: &apos;;
-			if (e.rhinoException) {
-				customMessage += &apos;Error on line &apos; + e.rhinoException.lineNumber() + &apos;: &apos;;
-			}
-			customMessage += e.toString();
-	
-			var errorContent = com.mirth.connect.util.ErrorMessageBuilder.buildErrorMessage(&apos;FHIR Listener&apos;, customMessage, e.javaException || null);
-			if (e.javaException) {
-				logger.error(errorContent, e.javaException);	
-			} else {
-				logger.error(errorContent);
-			}
-			response.setError(errorContent);
-		}
-	}
+        if (e) {
+            var customMessage = &apos;Channel &apos; + channelName + &apos;: &apos;;
+            if (e.rhinoException) {
+                customMessage += &apos;Error on line &apos; + e.rhinoException.lineNumber() + &apos;: &apos;;
+            }
+            customMessage += e.toString();
+    
+            var errorContent = com.mirth.connect.util.ErrorMessageBuilder.buildErrorMessage(&apos;FHIR Listener&apos;, customMessage, e.javaException || null);
+            if (e.javaException) {
+                logger.error(errorContent, e.javaException);    
+            } else {
+                logger.error(errorContent);
+            }
+            response.setError(errorContent);
+        }
+    }
 
-	return response;
+    return response;
 }</code>
       </properties>
     </codeTemplate>
-    <codeTemplate version="3.6.0">
+    <codeTemplate version="3.9.0">
       <id>a9691b6e-b455-4789-b4d7-89bcc095a163</id>
       <name>Get Prefer Header Value</name>
       <revision>1</revision>
       <lastModified>
-        <time>1528395619365</time>
-        <timezone>GMT</timezone>
+        <time>1586455859388</time>
+        <timezone>America/Los_Angeles</timezone>
       </lastModified>
       <contextSet>
         <delegate>
-          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
-          <contextType>CHANNEL_ATTACHMENT</contextType>
-          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
-          <contextType>SOURCE_RECEIVER</contextType>
           <contextType>CHANNEL_POSTPROCESSOR</contextType>
-          <contextType>DESTINATION_DISPATCHER</contextType>
           <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>CHANNEL_ATTACHMENT</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
         </delegate>
       </contextSet>
       <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
@@ -223,23 +228,23 @@ function getPreferValue() {
 }</code>
       </properties>
     </codeTemplate>
-    <codeTemplate version="3.6.0">
+    <codeTemplate version="3.9.0">
       <id>18c799ae-3553-40b0-b8cc-8898fbad5f7d</id>
       <name>Import Common Packages</name>
-      <revision>1</revision>
+      <revision>2</revision>
       <lastModified>
-        <time>1528395613308</time>
-        <timezone>GMT</timezone>
+        <time>1586474610229</time>
+        <timezone>America/Los_Angeles</timezone>
       </lastModified>
       <contextSet>
         <delegate>
-          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
-          <contextType>CHANNEL_ATTACHMENT</contextType>
-          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
-          <contextType>SOURCE_RECEIVER</contextType>
           <contextType>CHANNEL_POSTPROCESSOR</contextType>
-          <contextType>DESTINATION_DISPATCHER</contextType>
           <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>CHANNEL_ATTACHMENT</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
         </delegate>
       </contextSet>
       <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
@@ -250,26 +255,26 @@ function getPreferValue() {
 importPackage(Packages.ca.uhn.fhir.model.api);
 importPackage(Packages.ca.uhn.fhir.model.base.resource);
 importPackage(Packages.ca.uhn.fhir.model.primitive);
-importPackage(Packages.org.hl7.fhir.dstu3.model);
+importPackage(Packages.org.hl7.fhir.r4.model);
 importPackage(org.apache.commons.lang3);
 importPackage(org.apache.commons.lang3.math);</code>
       </properties>
     </codeTemplate>
-    <codeTemplate version="3.6.0">
+    <codeTemplate version="3.9.0">
       <id>ece0b77f-a9bc-43f1-ae57-96bb3a1b4143</id>
       <name>Update Resource Meta</name>
       <revision>1</revision>
       <lastModified>
-        <time>1528395616333</time>
-        <timezone>GMT</timezone>
+        <time>1586455859291</time>
+        <timezone>America/Los_Angeles</timezone>
       </lastModified>
       <contextSet>
         <delegate>
-          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
-          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
-          <contextType>SOURCE_RECEIVER</contextType>
-          <contextType>DESTINATION_DISPATCHER</contextType>
           <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
         </delegate>
       </contextSet>
       <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">

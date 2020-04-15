@@ -1,4 +1,5 @@
 try {
+	var fhirVersion = $('fhirVersion');
 	var type = $('fhirType').toLowerCase();
 	var id = $('fhirId');
 	
@@ -12,15 +13,15 @@ try {
 		var deleted = result.getBoolean('deleted');
 
 		if (deleted) {
-			return createOperationOutcome('error', 'processing', $('fhirType') + ' ID ' + id + ' has been deleted.', 410);
+			return createOperationOutcome('error', 'processing', $('fhirType') + ' ID ' + id + ' has been deleted.', fhirVersion, 410);
 		} else {
 			var response = FhirResponseFactory.getReadResponse(data, version, lastModified, 200, contentType);
 			responseMap.put('response', response);
 			return response.getMessage();
 		}
 	} else {
-		return createOperationOutcome('error', 'processing', $('fhirType') + ' ID ' + id + ' not found.', 404);
+		return createOperationOutcome('error', 'processing', $('fhirType') + ' ID ' + id + ' not found.', fhirVersion, 404);
 	}
 } catch (e) {
-	return createOperationOutcome('error', 'transient', 'Error reading resource.', 500, e);
+	return createOperationOutcome('error', 'transient', 'Error reading resource.', fhirVersion, 500, e);
 }

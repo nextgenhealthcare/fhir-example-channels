@@ -9,6 +9,8 @@
 		processing | transient | informational
 	@param {String} details - Additional details about the error. This may be a text description of
 		the error, or a system code that identifies the error.
+	@param {String} fhirVersion - The FHIR version of the OperationOutcome resource. Values: DSTU2 | DSTU2_1 | 
+		   DSTU_HL7ORG | STU3 | R4 | R5
 	@param {int} httpStatusCode - The HTTP status code to send back with the response. Defaults to 400
 		if not specified.
 	@param {Error} e - If included, this will be used to build up the response status message and
@@ -18,7 +20,7 @@
 		map, or return JSON.
 	@return {Response} The created Response object.
 */
-function createOperationOutcome(severity, code, details, httpStatusCode, e, isFormatXML) {
+function createOperationOutcome(severity, code, details, fhirVersion, httpStatusCode, e, isFormatXML) {
 	if (!httpStatusCode) {
 		httpStatusCode = 400;
 	}
@@ -27,8 +29,8 @@ function createOperationOutcome(severity, code, details, httpStatusCode, e, isFo
 		isFormatXML = !FhirUtil.isJSON($s('parameters').getParameter('_format'));
 	}
 
-	var outcome = FhirUtil.createOperationOutcome(severity, code, details);
-	var message = isFormatXML ? FhirUtil.toXML(outcome) : FhirUtil.toJSON(outcome);
+	var outcome = FhirUtil.createOperationOutcome(severity, code, details, fhirVersion);
+	var message = isFormatXML ? FhirUtil.toXML(outcome, fhirVersion) : FhirUtil.toJSON(outcome, fhirVersion);
 	responseMap.put('response', FhirResponseFactory.getResponse(message, httpStatusCode, isFormatXML ? FhirUtil.getMIMETypeXML() : FhirUtil.getMIMETypeJSON()));
 	var response = new Response(message);
 	response.setStatusMessage(severity.toUpperCase() + ' OperationOutcome created with status ' + httpStatusCode + '.');

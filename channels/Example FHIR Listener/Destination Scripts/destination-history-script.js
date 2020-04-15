@@ -1,4 +1,5 @@
 try {
+	var fhirVersion = $('fhirVersion');
 	var type = $('fhirType').toLowerCase();
 	var id = $('fhirId');
 	var requestURL = $('url');
@@ -11,7 +12,7 @@ try {
 	if (_count) {
 		_count = parseInt(_count, 10);
 		if (!_count) {
-			return createOperationOutcome('error', 'invalid', 'Parameter _count formatted incorrectly: ' + $('parameters').getParameter('_count'));
+			return createOperationOutcome('error', 'invalid', 'Parameter _count formatted incorrectly: ' + $('parameters').getParameter('_count'), fhirVersion);
 		}
 	}
 	
@@ -20,7 +21,7 @@ try {
 		try {
 			_since = convertDate(_since, 'yyyy-MM-dd HH:mm:ss.SSSZZ');
 		} catch (e) {
-			return createOperationOutcome('error', 'invalid', 'Parameter _since formatted incorrectly: ' + _since);
+			return createOperationOutcome('error', 'invalid', 'Parameter _since formatted incorrectly: ' + _since, fhirVersion);
 		}
 	}
 
@@ -56,7 +57,7 @@ try {
 	}
 
 	var result = executeCachedQuery(query, params);
-	var bundle = new Packages.org.hl7.fhir.dstu3.model.Bundle().setType(Packages.org.hl7.fhir.dstu3.model.Bundle.BundleType.HISTORY);
+	var bundle = new Packages.org.hl7.fhir.r4.model.Bundle().setType(Packages.org.hl7.fhir.r4.model.Bundle.BundleType.HISTORY);
 
 	while (result.next()) {
 		var entryType = getResultSetString(result, 'name');
@@ -68,12 +69,12 @@ try {
 		var entryRequestMethod = getResultSetString(result, 'request_method');
 		var entryRequestURL = getResultSetString(result, 'request_url');
 		
-		var resourceType = FhirUtil.getResourceType(entryType);
+		var resourceType = FhirUtil.getResourceType(entryType, fhirVersion);
 		if (resourceType != null) {
 			entryType = resourceType.getPath();
 		}
 
-		var request = new Packages.org.hl7.fhir.dstu3.model.Bundle.BundleEntryRequestComponent().setMethod(new Packages.org.hl7.fhir.dstu3.model.Bundle.HTTPVerbEnumFactory().fromCode(entryRequestMethod)).setUrl(entryRequestURL);
+		var request = new Packages.org.hl7.fhir.r4.model.Bundle.BundleEntryRequestComponent().setMethod(new Packages.org.hl7.fhir.r4.model.Bundle.HTTPVerbEnumFactory().fromCode(entryRequestMethod)).setUrl(entryRequestURL);
 		var entry = bundle.addEntry().setRequest(request);
 		
 		if (!entryDeleted) {
@@ -82,15 +83,15 @@ try {
 				relativeUrl += '../';
 			}
 			entry.setFullUrl(requestURL.resolve(relativeUrl + entryId + '/_history/' + entryVersion).toString());
-			entry.setResource(FhirUtil.fromXML(entryData));
+			entry.setResource(FhirUtil.fromXML(entryData, fhirVersion));
 		}
 	}
 
 	bundle.setTotal(bundle.getEntry().size());
 
-	var response = FhirResponseFactory.getHistoryResponse(FhirUtil.toXML(bundle), 200, FhirUtil.getMIMETypeXML());
+	var response = FhirResponseFactory.getHistoryResponse(FhirUtil.toXML(bundle, fhirVersion), 200, FhirUtil.getMIMETypeXML());
 	responseMap.put('response', response);
 	return response.getMessage();
 } catch (e) {
-	return createOperationOutcome('error', 'transient', 'Error retrieving resource history.', 500, e);
+	return createOperationOutcome('error', 'transient', 'Error retrieving resource history.', fhirVersion, 500, e);
 }

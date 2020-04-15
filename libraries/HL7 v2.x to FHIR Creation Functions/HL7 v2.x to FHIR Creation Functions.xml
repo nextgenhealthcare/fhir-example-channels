@@ -1,9 +1,9 @@
-<codeTemplateLibrary version="3.6.0">
+<codeTemplateLibrary version="3.9.0">
   <id>4f1160ba-0cd5-4899-9329-03683147ccca</id>
   <name>HL7 v2.x to FHIR Creation Functions</name>
-  <revision>1</revision>
+  <revision>3</revision>
   <lastModified>
-    <time>1527184991541</time>
+    <time>1586485972943</time>
     <timezone>America/Los_Angeles</timezone>
   </lastModified>
   <description>These code templates serve as an example of how to dynamically build
@@ -12,15 +12,20 @@ FHIR resources and convert from other formats such as HL7 v2.x.
 Some of the code templates in this library are dependent on other
 code templates from the &quot;HL7 v2.x to FHIR Helper Functions&quot; library.</description>
   <includeNewChannels>false</includeNewChannels>
-  <enabledChannelIds/>
-  <disabledChannelIds/>
+  <enabledChannelIds>
+    <string>42e730bb-0721-435e-8dcf-d25d6d5d1dc6</string>
+  </enabledChannelIds>
+  <disabledChannelIds>
+    <string>1892f241-d643-4abb-b0af-b20b87e0cf12</string>
+    <string>e678dbf5-f021-43dc-84ae-967500d5c31a</string>
+  </disabledChannelIds>
   <codeTemplates>
-    <codeTemplate version="3.6.0">
+    <codeTemplate version="3.9.0">
       <id>63476871-1ea1-4377-8998-0e2e0670e575</id>
       <name>Create and Consolidate FHIR Patient</name>
       <revision>1</revision>
       <lastModified>
-        <time>1527110341487</time>
+        <time>1586480094081</time>
         <timezone>America/Los_Angeles</timezone>
       </lastModified>
       <contextSet>
@@ -46,12 +51,12 @@ function createAndConsolidateFhirPatient(msg) {
 }</code>
       </properties>
     </codeTemplate>
-    <codeTemplate version="3.6.0">
+    <codeTemplate version="3.9.0">
       <id>67f171ca-47bd-431c-b71b-4b032ee52e21</id>
       <name>Create FHIR Patient</name>
-      <revision>1</revision>
+      <revision>2</revision>
       <lastModified>
-        <time>1527110265444</time>
+        <time>1586485972953</time>
         <timezone>America/Los_Angeles</timezone>
       </lastModified>
       <contextSet>
@@ -63,7 +68,7 @@ function createAndConsolidateFhirPatient(msg) {
           <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
         </delegate>
       </contextSet>
-      <properties class="com.mirth.connect.plugins.fhir.shared.FhirModelBuilderCodeTemplateProperties">
+      <properties class="com.mirth.connect.plugins.fhir.shared.FhirModelBuilderCodeTemplateProperties" version="3.9.0">
         <type>FUNCTION</type>
         <functionSignature>createFhirPatient(msg)</functionSignature>
         <jsDoc>/**
@@ -77,190 +82,190 @@ function createAndConsolidateFhirPatient(msg) {
         <resultMapType>CHANNEL</resultMapType>
         <resultMapVariable></resultMapVariable>
         <definition>Patient</definition>
-        <model class="objectModel">
+        <model class="com.mirth.connect.jsonbuilder.shared.models.ObjectModel">
           <usingBuilder>true</usingBuilder>
           <properties class="linked-hash-map">
             <entry>
               <string>resourceType</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="stringModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                   <stringValue>Patient</stringValue>
-                  <usingEnum>true</usingEnum>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>identifier</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="arrayModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.ArrayModel">
                   <stringValue>createPatientIdentifiers(msg[&apos;PID&apos;])</stringValue>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>name</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="arrayModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.ArrayModel">
                   <stringValue>createPatientNames(msg[&apos;PID&apos;])</stringValue>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>telecom</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="arrayModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.ArrayModel">
                   <stringValue>createPatientTelecoms(msg[&apos;PID&apos;])</stringValue>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>gender</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="stringModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                   <stringValue>convertToFhirGender(msg[&apos;PID&apos;][&apos;PID.8&apos;][&apos;PID.8.1&apos;].toString())</stringValue>
                   <scriptExpression>true</scriptExpression>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>birthDate</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="stringModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                   <stringValue>convertToFhirDate(msg[&apos;PID&apos;][&apos;PID.7&apos;][&apos;PID.7.1&apos;].toString())</stringValue>
                   <scriptExpression>true</scriptExpression>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>deceasedBoolean</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="booleanModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.BooleanModel">
                   <stringValue>convertYesNoIndicator(msg[&apos;PID&apos;][&apos;PID.30&apos;][&apos;PID.30.1&apos;].toString())</stringValue>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>deceasedDateTime</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="stringModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                   <stringValue>convertToFhirTimestamp(msg[&apos;PID&apos;][&apos;PID.29&apos;][&apos;PID.29.1&apos;].toString())</stringValue>
                   <scriptExpression>true</scriptExpression>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>address</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="arrayModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.ArrayModel">
                   <stringValue>createPatientAddresses(msg[&apos;PID&apos;])</stringValue>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>maritalStatus</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="objectModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.ObjectModel">
                   <usingBuilder>true</usingBuilder>
                   <properties class="linked-hash-map">
                     <entry>
                       <string>text</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="stringModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                           <stringValue>msg[&apos;PID&apos;][&apos;PID.16&apos;][&apos;PID.16.1&apos;].toString()</stringValue>
                           <scriptExpression>true</scriptExpression>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                   </properties>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>multipleBirthBoolean</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="booleanModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.BooleanModel">
                   <stringValue>convertYesNoIndicator(msg[&apos;PID&apos;][&apos;PID.24&apos;][&apos;PID.24.1&apos;].toString())</stringValue>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>contact</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="arrayModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.ArrayModel">
                   <stringValue>createPatientContacts(msg[&apos;NK1&apos;])</stringValue>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>communication</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="arrayModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.ArrayModel">
                   <usingBuilder>true</usingBuilder>
                   <elements>
-                    <objectModel>
+                    <com.mirth.connect.jsonbuilder.shared.models.ObjectModel>
                       <usingBuilder>true</usingBuilder>
                       <properties class="linked-hash-map">
                         <entry>
                           <string>language</string>
-                          <objectProperty>
+                          <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                             <enabled>true</enabled>
-                            <properties class="objectModel">
+                            <properties class="com.mirth.connect.jsonbuilder.shared.models.ObjectModel">
                               <usingBuilder>true</usingBuilder>
                               <properties class="linked-hash-map">
                                 <entry>
-                                  <string>text</string>
-                                  <objectProperty>
-                                    <enabled>true</enabled>
-                                    <properties class="stringModel">
-                                      <stringValue>msg[&apos;PID&apos;][&apos;PID.15&apos;][&apos;PID.15.2&apos;].toString()</stringValue>
-                                      <scriptExpression>true</scriptExpression>
-                                    </properties>
-                                  </objectProperty>
-                                </entry>
-                                <entry>
                                   <string>id</string>
-                                  <objectProperty>
+                                  <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                                     <enabled>true</enabled>
-                                    <properties class="stringModel">
+                                    <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                                       <stringValue>msg[&apos;PID&apos;][&apos;PID.15&apos;][&apos;PID.15.1&apos;].toString()</stringValue>
                                       <scriptExpression>true</scriptExpression>
                                     </properties>
-                                  </objectProperty>
+                                  </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
+                                </entry>
+                                <entry>
+                                  <string>text</string>
+                                  <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
+                                    <enabled>true</enabled>
+                                    <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
+                                      <stringValue>msg[&apos;PID&apos;][&apos;PID.15&apos;][&apos;PID.15.2&apos;].toString()</stringValue>
+                                      <scriptExpression>true</scriptExpression>
+                                    </properties>
+                                  </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                                 </entry>
                               </properties>
                             </properties>
-                          </objectProperty>
+                          </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         </entry>
                       </properties>
-                    </objectModel>
+                    </com.mirth.connect.jsonbuilder.shared.models.ObjectModel>
                   </elements>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
           </properties>
         </model>
+        <fhirVersion>R4</fhirVersion>
       </properties>
     </codeTemplate>
-    <codeTemplate version="3.6.0">
+    <codeTemplate version="3.9.0">
       <id>767a5ea0-0510-4784-a651-770759f2c4ca</id>
       <name>Create FHIR Patient Address</name>
-      <revision>1</revision>
+      <revision>2</revision>
       <lastModified>
-        <time>1527111747544</time>
+        <time>1586486105505</time>
         <timezone>America/Los_Angeles</timezone>
       </lastModified>
       <contextSet>
@@ -272,7 +277,7 @@ function createAndConsolidateFhirPatient(msg) {
           <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
         </delegate>
       </contextSet>
-      <properties class="com.mirth.connect.plugins.fhir.shared.FhirModelBuilderCodeTemplateProperties">
+      <properties class="com.mirth.connect.plugins.fhir.shared.FhirModelBuilderCodeTemplateProperties" version="3.9.0">
         <type>FUNCTION</type>
         <functionSignature>createPatientAddress(pid11)</functionSignature>
         <jsDoc>/**
@@ -285,149 +290,150 @@ function createAndConsolidateFhirPatient(msg) {
         <resultMapType>CHANNEL</resultMapType>
         <resultMapVariable></resultMapVariable>
         <definition>Address</definition>
-        <model class="objectModel">
+        <model class="com.mirth.connect.jsonbuilder.shared.models.ObjectModel">
           <usingBuilder>true</usingBuilder>
           <properties class="linked-hash-map">
             <entry>
               <string>use</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="stringModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                   <stringValue>convertAddressUse(pid11[&apos;PID.11.7&apos;].toString())</stringValue>
                   <scriptExpression>true</scriptExpression>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>type</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>false</enabled>
-                <properties class="stringModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                   <stringValue>postal</stringValue>
                   <usingEnum>true</usingEnum>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>text</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="stringModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                   <stringValue>(pid11[&apos;PID.11.1&apos;].toString() + &apos; &apos; + pid11[&apos;PID.11.2&apos;].toString() + &apos; &apos; + pid11[&apos;PID.11.3&apos;].toString() + &apos; &apos; + pid11[&apos;PID.11.4&apos;].toString() + &apos; &apos; + pid11[&apos;PID.11.5&apos;].toString() + &apos; &apos; + pid11[&apos;PID.11.6&apos;].toString()).trim()</stringValue>
                   <scriptExpression>true</scriptExpression>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>line</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="arrayModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.ArrayModel">
                   <usingBuilder>true</usingBuilder>
                   <elements>
-                    <stringModel>
+                    <com.mirth.connect.jsonbuilder.shared.models.StringModel>
                       <stringValue>pid11[&apos;PID.11.1&apos;].toString()</stringValue>
                       <scriptExpression>true</scriptExpression>
-                    </stringModel>
-                    <stringModel>
+                    </com.mirth.connect.jsonbuilder.shared.models.StringModel>
+                    <com.mirth.connect.jsonbuilder.shared.models.StringModel>
                       <stringValue>pid11[&apos;PID.11.2&apos;].toString()</stringValue>
                       <scriptExpression>true</scriptExpression>
-                    </stringModel>
+                    </com.mirth.connect.jsonbuilder.shared.models.StringModel>
                   </elements>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>city</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="stringModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                   <stringValue>pid11[&apos;PID.11.3&apos;].toString()</stringValue>
                   <scriptExpression>true</scriptExpression>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>district</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="stringModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                   <stringValue>pid11[&apos;PID.11.9&apos;].toString()</stringValue>
                   <scriptExpression>true</scriptExpression>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>state</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="stringModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                   <stringValue>pid11[&apos;PID.11.4&apos;].toString()</stringValue>
                   <scriptExpression>true</scriptExpression>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>postalCode</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="stringModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                   <stringValue>pid11[&apos;PID.11.5&apos;].toString()</stringValue>
                   <scriptExpression>true</scriptExpression>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>country</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="stringModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                   <stringValue>pid11[&apos;PID.11.6&apos;].toString()</stringValue>
                   <scriptExpression>true</scriptExpression>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>period</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="objectModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.ObjectModel">
                   <usingBuilder>true</usingBuilder>
                   <properties class="linked-hash-map">
                     <entry>
                       <string>start</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="stringModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                           <stringValue>convertToFhirTimestamp(pid11[&apos;PID.11.13&apos;].toString())</stringValue>
                           <scriptExpression>true</scriptExpression>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                     <entry>
                       <string>end</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="stringModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                           <stringValue>convertToFhirTimestamp(pid11[&apos;PID.11.14&apos;].toString())</stringValue>
                           <scriptExpression>true</scriptExpression>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                   </properties>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
           </properties>
         </model>
+        <fhirVersion>R4</fhirVersion>
       </properties>
     </codeTemplate>
-    <codeTemplate version="3.6.0">
+    <codeTemplate version="3.9.0">
       <id>815aeba2-099f-4f62-aae0-567aa9927a4b</id>
       <name>Create FHIR Patient Addresses</name>
       <revision>1</revision>
       <lastModified>
-        <time>1527117740412</time>
+        <time>1586480094700</time>
         <timezone>America/Los_Angeles</timezone>
       </lastModified>
       <contextSet>
@@ -456,12 +462,12 @@ function createPatientAddresses(pid) {
 }</code>
       </properties>
     </codeTemplate>
-    <codeTemplate version="3.6.0">
+    <codeTemplate version="3.9.0">
       <id>b8ca268a-0fda-4445-95bc-27334ebcf97f</id>
       <name>Create FHIR Patient Contact</name>
-      <revision>1</revision>
+      <revision>2</revision>
       <lastModified>
-        <time>1527112814630</time>
+        <time>1586487405538</time>
         <timezone>America/Los_Angeles</timezone>
       </lastModified>
       <contextSet>
@@ -473,7 +479,7 @@ function createPatientAddresses(pid) {
           <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
         </delegate>
       </contextSet>
-      <properties class="com.mirth.connect.plugins.fhir.shared.FhirModelBuilderCodeTemplateProperties">
+      <properties class="com.mirth.connect.plugins.fhir.shared.FhirModelBuilderCodeTemplateProperties" version="3.9.0">
         <type>FUNCTION</type>
         <functionSignature>createPatientContact(nk1)</functionSignature>
         <jsDoc>/**
@@ -486,351 +492,350 @@ function createPatientAddresses(pid) {
         <resultMapType>CHANNEL</resultMapType>
         <resultMapVariable></resultMapVariable>
         <definition>Patient_Contact</definition>
-        <model class="objectModel">
+        <model class="com.mirth.connect.jsonbuilder.shared.models.ObjectModel">
           <usingBuilder>true</usingBuilder>
           <properties class="linked-hash-map">
             <entry>
               <string>relationship</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="arrayModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.ArrayModel">
                   <usingBuilder>true</usingBuilder>
                   <elements>
-                    <objectModel>
+                    <com.mirth.connect.jsonbuilder.shared.models.ObjectModel>
                       <usingBuilder>true</usingBuilder>
                       <properties class="linked-hash-map">
                         <entry>
-                          <string>text</string>
-                          <objectProperty>
-                            <enabled>true</enabled>
-                            <properties class="stringModel">
-                              <stringValue>nk1[&apos;NK1.3&apos;][&apos;NK1.3.2&apos;].toString()</stringValue>
-                              <scriptExpression>true</scriptExpression>
-                            </properties>
-                          </objectProperty>
-                        </entry>
-                        <entry>
                           <string>id</string>
-                          <objectProperty>
+                          <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                             <enabled>true</enabled>
-                            <properties class="stringModel">
+                            <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                               <stringValue>nk1[&apos;NK1.3&apos;][&apos;NK1.3.1&apos;].toString()</stringValue>
                               <scriptExpression>true</scriptExpression>
                             </properties>
-                          </objectProperty>
+                          </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
+                        </entry>
+                        <entry>
+                          <string>text</string>
+                          <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
+                            <enabled>true</enabled>
+                            <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
+                              <stringValue>nk1[&apos;NK1.3&apos;][&apos;NK1.3.2&apos;].toString()</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         </entry>
                       </properties>
-                    </objectModel>
-                    <objectModel>
+                    </com.mirth.connect.jsonbuilder.shared.models.ObjectModel>
+                    <com.mirth.connect.jsonbuilder.shared.models.ObjectModel>
                       <usingBuilder>true</usingBuilder>
                       <properties class="linked-hash-map">
                         <entry>
-                          <string>text</string>
-                          <objectProperty>
-                            <enabled>true</enabled>
-                            <properties class="stringModel">
-                              <stringValue>nk1[&apos;NK1.7&apos;][&apos;NK1.7.2&apos;].toString()</stringValue>
-                              <scriptExpression>true</scriptExpression>
-                            </properties>
-                          </objectProperty>
-                        </entry>
-                        <entry>
                           <string>id</string>
-                          <objectProperty>
+                          <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                             <enabled>true</enabled>
-                            <properties class="stringModel">
+                            <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                               <stringValue>nk1[&apos;NK1.7&apos;][&apos;NK1.7.1&apos;].toString()</stringValue>
                               <scriptExpression>true</scriptExpression>
                             </properties>
-                          </objectProperty>
+                          </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
+                        </entry>
+                        <entry>
+                          <string>text</string>
+                          <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
+                            <enabled>true</enabled>
+                            <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
+                              <stringValue>nk1[&apos;NK1.7&apos;][&apos;NK1.7.2&apos;].toString()</stringValue>
+                              <scriptExpression>true</scriptExpression>
+                            </properties>
+                          </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         </entry>
                       </properties>
-                    </objectModel>
+                    </com.mirth.connect.jsonbuilder.shared.models.ObjectModel>
                   </elements>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>name</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="objectModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.ObjectModel">
                   <usingBuilder>true</usingBuilder>
                   <properties class="linked-hash-map">
                     <entry>
                       <string>use</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="stringModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                           <stringValue>usual</stringValue>
                           <usingEnum>true</usingEnum>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                     <entry>
                       <string>family</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="stringModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                           <stringValue>nk1[&apos;NK1.2&apos;][&apos;NK1.2.1&apos;].toString()</stringValue>
                           <scriptExpression>true</scriptExpression>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                     <entry>
                       <string>given</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="arrayModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.ArrayModel">
                           <usingBuilder>true</usingBuilder>
                           <elements>
-                            <stringModel>
+                            <com.mirth.connect.jsonbuilder.shared.models.StringModel>
                               <stringValue>nk1[&apos;NK1.2&apos;][&apos;NK1.2.2&apos;].toString()</stringValue>
                               <scriptExpression>true</scriptExpression>
-                            </stringModel>
-                            <stringModel>
+                            </com.mirth.connect.jsonbuilder.shared.models.StringModel>
+                            <com.mirth.connect.jsonbuilder.shared.models.StringModel>
                               <stringValue>nk1[&apos;NK1.2&apos;][&apos;NK1.2.3&apos;].toString()</stringValue>
                               <scriptExpression>true</scriptExpression>
-                            </stringModel>
+                            </com.mirth.connect.jsonbuilder.shared.models.StringModel>
                           </elements>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                     <entry>
                       <string>prefix</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="arrayModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.ArrayModel">
                           <usingBuilder>true</usingBuilder>
                           <elements>
-                            <stringModel>
+                            <com.mirth.connect.jsonbuilder.shared.models.StringModel>
                               <stringValue>nk1[&apos;NK1.2&apos;][&apos;NK1.2.5&apos;].toString()</stringValue>
                               <scriptExpression>true</scriptExpression>
-                            </stringModel>
+                            </com.mirth.connect.jsonbuilder.shared.models.StringModel>
                           </elements>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                     <entry>
                       <string>suffix</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="arrayModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.ArrayModel">
                           <usingBuilder>true</usingBuilder>
                           <elements>
-                            <stringModel>
+                            <com.mirth.connect.jsonbuilder.shared.models.StringModel>
                               <stringValue>nk1[&apos;NK1.2&apos;][&apos;NK1.2.4&apos;].toString()</stringValue>
                               <scriptExpression>true</scriptExpression>
-                            </stringModel>
+                            </com.mirth.connect.jsonbuilder.shared.models.StringModel>
                           </elements>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                     <entry>
                       <string>period</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="objectModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.ObjectModel">
                           <usingBuilder>true</usingBuilder>
                           <properties class="linked-hash-map">
                             <entry>
                               <string>start</string>
-                              <objectProperty>
+                              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                                 <enabled>true</enabled>
-                                <properties class="stringModel">
+                                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                                   <stringValue>convertToFhirTimestamp(nk1[&apos;NK1.2&apos;][&apos;NK1.2.12&apos;].toString())</stringValue>
                                   <scriptExpression>true</scriptExpression>
                                 </properties>
-                              </objectProperty>
+                              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                             </entry>
                             <entry>
                               <string>end</string>
-                              <objectProperty>
+                              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                                 <enabled>true</enabled>
-                                <properties class="stringModel">
+                                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                                   <stringValue>convertToFhirTimestamp(nk1[&apos;NK1.2&apos;][&apos;NK1.2.13&apos;].toString())</stringValue>
                                   <scriptExpression>true</scriptExpression>
                                 </properties>
-                              </objectProperty>
+                              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                             </entry>
                           </properties>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                   </properties>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>telecom</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="arrayModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.ArrayModel">
                   <stringValue>createPatientContactTelecoms(nk1)</stringValue>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>address</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="objectModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.ObjectModel">
                   <usingBuilder>true</usingBuilder>
                   <properties class="linked-hash-map">
                     <entry>
                       <string>use</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="stringModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                           <stringValue>convertAddressUse(nk1[&apos;NK1.4&apos;][&apos;NK1.4.7&apos;].toString())</stringValue>
                           <scriptExpression>true</scriptExpression>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                     <entry>
                       <string>type</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>false</enabled>
-                        <properties class="stringModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                           <stringValue>postal</stringValue>
                           <usingEnum>true</usingEnum>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                     <entry>
                       <string>text</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="stringModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                           <stringValue>(nk1[&apos;NK1.4&apos;][&apos;NK1.4.1&apos;].toString() + &apos; &apos; + nk1[&apos;NK1.4&apos;][&apos;NK1.4.2&apos;].toString() + &apos; &apos; + nk1[&apos;NK1.4&apos;][&apos;NK1.4.3&apos;].toString() + &apos; &apos; + nk1[&apos;NK1.4&apos;][&apos;NK1.4.4&apos;].toString() + &apos; &apos; + nk1[&apos;NK1.4&apos;][&apos;NK1.4.5&apos;].toString() + &apos; &apos; + nk1[&apos;NK1.4&apos;][&apos;NK1.4.6&apos;].toString()).trim()</stringValue>
                           <scriptExpression>true</scriptExpression>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                     <entry>
                       <string>line</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="arrayModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.ArrayModel">
                           <usingBuilder>true</usingBuilder>
                           <elements>
-                            <stringModel>
+                            <com.mirth.connect.jsonbuilder.shared.models.StringModel>
                               <stringValue>nk1[&apos;NK1.4&apos;][&apos;NK1.4.1&apos;].toString()</stringValue>
                               <scriptExpression>true</scriptExpression>
-                            </stringModel>
-                            <stringModel>
+                            </com.mirth.connect.jsonbuilder.shared.models.StringModel>
+                            <com.mirth.connect.jsonbuilder.shared.models.StringModel>
                               <stringValue>nk1[&apos;NK1.4&apos;][&apos;NK1.4.2&apos;].toString()</stringValue>
                               <scriptExpression>true</scriptExpression>
-                            </stringModel>
+                            </com.mirth.connect.jsonbuilder.shared.models.StringModel>
                           </elements>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                     <entry>
                       <string>city</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="stringModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                           <stringValue>nk1[&apos;NK1.4&apos;][&apos;NK1.4.3&apos;].toString()</stringValue>
                           <scriptExpression>true</scriptExpression>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                     <entry>
                       <string>district</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="stringModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                           <stringValue>nk1[&apos;NK1.4&apos;][&apos;NK1.4.9&apos;].toString()</stringValue>
                           <scriptExpression>true</scriptExpression>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                     <entry>
                       <string>state</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="stringModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                           <stringValue>nk1[&apos;NK1.4&apos;][&apos;NK1.4.4&apos;].toString()</stringValue>
                           <scriptExpression>true</scriptExpression>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                     <entry>
                       <string>postalCode</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="stringModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                           <stringValue>nk1[&apos;NK1.4&apos;][&apos;NK1.4.5&apos;].toString()</stringValue>
                           <scriptExpression>true</scriptExpression>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                     <entry>
                       <string>country</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="stringModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                           <stringValue>nk1[&apos;NK1.4&apos;][&apos;NK1.4.6&apos;].toString()</stringValue>
                           <scriptExpression>true</scriptExpression>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                     <entry>
                       <string>period</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="objectModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.ObjectModel">
                           <usingBuilder>true</usingBuilder>
                           <properties class="linked-hash-map">
                             <entry>
                               <string>start</string>
-                              <objectProperty>
+                              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                                 <enabled>true</enabled>
-                                <properties class="stringModel">
-                                  <stringValue>convertToFhirTimestamp(nk1[&apos;NK1.4&apos;][&apos;NK1.4.13&apos;].toString())</stringValue>
+                                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                                   <scriptExpression>true</scriptExpression>
                                 </properties>
-                              </objectProperty>
+                              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                             </entry>
                             <entry>
                               <string>end</string>
-                              <objectProperty>
+                              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                                 <enabled>true</enabled>
-                                <properties class="stringModel">
-                                  <stringValue>convertToFhirTimestamp(nk1[&apos;NK1.4&apos;][&apos;NK1.4.14&apos;].toString())</stringValue>
+                                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                                   <scriptExpression>true</scriptExpression>
                                 </properties>
-                              </objectProperty>
+                              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                             </entry>
                           </properties>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                   </properties>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>gender</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="stringModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                   <stringValue>convertToFhirGender(nk1[&apos;NK1.15&apos;][&apos;NK1.15.1&apos;].toString())</stringValue>
                   <scriptExpression>true</scriptExpression>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
           </properties>
         </model>
+        <fhirVersion>R4</fhirVersion>
       </properties>
     </codeTemplate>
-    <codeTemplate version="3.6.0">
+    <codeTemplate version="3.9.0">
       <id>f58ca0f3-f121-453d-ad59-b960300fa35f</id>
       <name>Create FHIR Patient Contact Telecoms</name>
       <revision>1</revision>
       <lastModified>
-        <time>1527112814685</time>
+        <time>1586480093877</time>
         <timezone>America/Los_Angeles</timezone>
       </lastModified>
       <contextSet>
@@ -862,12 +867,12 @@ function createPatientContactTelecoms(nk1) {
 }</code>
       </properties>
     </codeTemplate>
-    <codeTemplate version="3.6.0">
+    <codeTemplate version="3.9.0">
       <id>d66442af-90e6-4e2b-813a-b287cdc05af6</id>
       <name>Create FHIR Patient Contacts</name>
       <revision>1</revision>
       <lastModified>
-        <time>1527117459046</time>
+        <time>1586480094277</time>
         <timezone>America/Los_Angeles</timezone>
       </lastModified>
       <contextSet>
@@ -896,12 +901,12 @@ function createPatientContacts(nk1List) {
 }</code>
       </properties>
     </codeTemplate>
-    <codeTemplate version="3.6.0">
+    <codeTemplate version="3.9.0">
       <id>1f5b9ac0-85c0-4602-a164-89b8e13256ae</id>
       <name>Create FHIR Patient Identifier</name>
-      <revision>1</revision>
+      <revision>2</revision>
       <lastModified>
-        <time>1527110747655</time>
+        <time>1586487459582</time>
         <timezone>America/Los_Angeles</timezone>
       </lastModified>
       <contextSet>
@@ -913,7 +918,7 @@ function createPatientContacts(nk1List) {
           <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
         </delegate>
       </contextSet>
-      <properties class="com.mirth.connect.plugins.fhir.shared.FhirModelBuilderCodeTemplateProperties">
+      <properties class="com.mirth.connect.plugins.fhir.shared.FhirModelBuilderCodeTemplateProperties" version="3.9.0">
         <type>FUNCTION</type>
         <functionSignature>createPatientIdentifier(pid3)</functionSignature>
         <jsDoc>/**
@@ -926,101 +931,102 @@ function createPatientContacts(nk1List) {
         <resultMapType>CHANNEL</resultMapType>
         <resultMapVariable></resultMapVariable>
         <definition>Identifier</definition>
-        <model class="objectModel">
+        <model class="com.mirth.connect.jsonbuilder.shared.models.ObjectModel">
           <usingBuilder>true</usingBuilder>
           <properties class="linked-hash-map">
             <entry>
               <string>use</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>false</enabled>
-                <properties class="stringModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                   <stringValue>usual</stringValue>
                   <usingEnum>true</usingEnum>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>type</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="objectModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.ObjectModel">
                   <usingBuilder>true</usingBuilder>
                   <properties class="linked-hash-map">
                     <entry>
                       <string>text</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="stringModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                           <stringValue>pid3[&apos;PID.3.5&apos;].toString()</stringValue>
                           <scriptExpression>true</scriptExpression>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                   </properties>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>system</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="stringModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                   <stringValue>pid3[&apos;PID.3.4&apos;].toString()</stringValue>
                   <scriptExpression>true</scriptExpression>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>value</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="stringModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                   <stringValue>pid3[&apos;PID.3.1&apos;].toString()</stringValue>
                   <scriptExpression>true</scriptExpression>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>period</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="objectModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.ObjectModel">
                   <usingBuilder>true</usingBuilder>
                   <properties class="linked-hash-map">
                     <entry>
                       <string>start</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="stringModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                           <stringValue>convertToFhirTimestamp(pid3[&apos;PID.3.7&apos;].toString())</stringValue>
                           <scriptExpression>true</scriptExpression>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                     <entry>
                       <string>end</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="stringModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                           <stringValue>convertToFhirTimestamp(pid3[&apos;PID.3.8&apos;].toString())</stringValue>
                           <scriptExpression>true</scriptExpression>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                   </properties>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
           </properties>
         </model>
+        <fhirVersion>R4</fhirVersion>
       </properties>
     </codeTemplate>
-    <codeTemplate version="3.6.0">
+    <codeTemplate version="3.9.0">
       <id>1132126f-5bd3-4b2f-a11c-f7107114c8da</id>
       <name>Create FHIR Patient Identifiers</name>
       <revision>1</revision>
       <lastModified>
-        <time>1527112523973</time>
+        <time>1586480094290</time>
         <timezone>America/Los_Angeles</timezone>
       </lastModified>
       <contextSet>
@@ -1049,12 +1055,12 @@ function createPatientIdentifiers(pid) {
 }</code>
       </properties>
     </codeTemplate>
-    <codeTemplate version="3.6.0">
+    <codeTemplate version="3.9.0">
       <id>a446affe-ac81-4fea-8572-336ba63dfeae</id>
       <name>Create FHIR Patient Name</name>
-      <revision>1</revision>
+      <revision>2</revision>
       <lastModified>
-        <time>1527111130643</time>
+        <time>1586487535555</time>
         <timezone>America/Los_Angeles</timezone>
       </lastModified>
       <contextSet>
@@ -1066,7 +1072,7 @@ function createPatientIdentifiers(pid) {
           <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
         </delegate>
       </contextSet>
-      <properties class="com.mirth.connect.plugins.fhir.shared.FhirModelBuilderCodeTemplateProperties">
+      <properties class="com.mirth.connect.plugins.fhir.shared.FhirModelBuilderCodeTemplateProperties" version="3.9.0">
         <type>FUNCTION</type>
         <functionSignature>createPatientName(node)</functionSignature>
         <jsDoc>/**
@@ -1079,119 +1085,120 @@ function createPatientIdentifiers(pid) {
         <resultMapType>CHANNEL</resultMapType>
         <resultMapVariable></resultMapVariable>
         <definition>HumanName</definition>
-        <model class="objectModel">
+        <model class="com.mirth.connect.jsonbuilder.shared.models.ObjectModel">
           <usingBuilder>true</usingBuilder>
           <properties class="linked-hash-map">
             <entry>
               <string>use</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="stringModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                   <stringValue>usual</stringValue>
                   <usingEnum>true</usingEnum>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>family</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="stringModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                   <stringValue>node[&apos;PID.5.1&apos;].toString() || node[&apos;PID.9.1&apos;].toString()</stringValue>
                   <scriptExpression>true</scriptExpression>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>given</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="arrayModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.ArrayModel">
                   <usingBuilder>true</usingBuilder>
                   <elements>
-                    <stringModel>
+                    <com.mirth.connect.jsonbuilder.shared.models.StringModel>
                       <stringValue>node[&apos;PID.5.2&apos;].toString() || node[&apos;PID.9.2&apos;].toString()</stringValue>
                       <scriptExpression>true</scriptExpression>
-                    </stringModel>
-                    <stringModel>
+                    </com.mirth.connect.jsonbuilder.shared.models.StringModel>
+                    <com.mirth.connect.jsonbuilder.shared.models.StringModel>
                       <stringValue>node[&apos;PID.5.3&apos;].toString() || node[&apos;PID.9.3&apos;].toString()</stringValue>
                       <scriptExpression>true</scriptExpression>
-                    </stringModel>
+                    </com.mirth.connect.jsonbuilder.shared.models.StringModel>
                   </elements>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>prefix</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="arrayModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.ArrayModel">
                   <usingBuilder>true</usingBuilder>
                   <elements>
-                    <stringModel>
+                    <com.mirth.connect.jsonbuilder.shared.models.StringModel>
                       <stringValue>node[&apos;PID.5.5&apos;].toString() || node[&apos;PID.9.5&apos;].toString()</stringValue>
                       <scriptExpression>true</scriptExpression>
-                    </stringModel>
+                    </com.mirth.connect.jsonbuilder.shared.models.StringModel>
                   </elements>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>suffix</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="arrayModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.ArrayModel">
                   <usingBuilder>true</usingBuilder>
                   <elements>
-                    <stringModel>
+                    <com.mirth.connect.jsonbuilder.shared.models.StringModel>
                       <stringValue>node[&apos;PID.5.4&apos;].toString() || node[&apos;PID.9.4&apos;].toString()</stringValue>
                       <scriptExpression>true</scriptExpression>
-                    </stringModel>
+                    </com.mirth.connect.jsonbuilder.shared.models.StringModel>
                   </elements>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>period</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="objectModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.ObjectModel">
                   <usingBuilder>true</usingBuilder>
                   <properties class="linked-hash-map">
                     <entry>
                       <string>start</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="stringModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                           <stringValue>node[&apos;PID.5.12&apos;].toString() || node[&apos;PID.9.12&apos;].toString()</stringValue>
                           <scriptExpression>true</scriptExpression>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                     <entry>
                       <string>end</string>
-                      <objectProperty>
+                      <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                         <enabled>true</enabled>
-                        <properties class="stringModel">
+                        <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                           <stringValue>node[&apos;PID.5.13&apos;].toString() || node[&apos;PID.9.13&apos;].toString()</stringValue>
                           <scriptExpression>true</scriptExpression>
                         </properties>
-                      </objectProperty>
+                      </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                     </entry>
                   </properties>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
           </properties>
         </model>
+        <fhirVersion>R4</fhirVersion>
       </properties>
     </codeTemplate>
-    <codeTemplate version="3.6.0">
+    <codeTemplate version="3.9.0">
       <id>d73cd539-ab3c-4e82-bd24-81a6025e7ed4</id>
       <name>Create FHIR Patient Names</name>
       <revision>1</revision>
       <lastModified>
-        <time>1527117574679</time>
+        <time>1586480093865</time>
         <timezone>America/Los_Angeles</timezone>
       </lastModified>
       <contextSet>
@@ -1223,12 +1230,12 @@ function createPatientNames(pid) {
 }</code>
       </properties>
     </codeTemplate>
-    <codeTemplate version="3.6.0">
+    <codeTemplate version="3.9.0">
       <id>ab382e75-1993-4d31-b9b8-6295b8d241ca</id>
       <name>Create FHIR Patient Telecom</name>
-      <revision>1</revision>
+      <revision>2</revision>
       <lastModified>
-        <time>1527112524003</time>
+        <time>1586487562895</time>
         <timezone>America/Los_Angeles</timezone>
       </lastModified>
       <contextSet>
@@ -1240,7 +1247,7 @@ function createPatientNames(pid) {
           <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
         </delegate>
       </contextSet>
-      <properties class="com.mirth.connect.plugins.fhir.shared.FhirModelBuilderCodeTemplateProperties">
+      <properties class="com.mirth.connect.plugins.fhir.shared.FhirModelBuilderCodeTemplateProperties" version="3.9.0">
         <type>FUNCTION</type>
         <functionSignature>createPatientTelecom(node, use)</functionSignature>
         <jsDoc>/**
@@ -1254,49 +1261,50 @@ function createPatientNames(pid) {
         <resultMapType>CHANNEL</resultMapType>
         <resultMapVariable></resultMapVariable>
         <definition>ContactPoint</definition>
-        <model class="objectModel">
+        <model class="com.mirth.connect.jsonbuilder.shared.models.ObjectModel">
           <usingBuilder>true</usingBuilder>
           <properties class="linked-hash-map">
             <entry>
               <string>system</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="stringModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                   <stringValue>phone</stringValue>
                   <usingEnum>true</usingEnum>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>value</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="stringModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                   <stringValue>node[&apos;PID.13.1&apos;].toString() || node[&apos;PID.14.1&apos;].toString() || node[&apos;NK1.5.1&apos;].toString() || node[&apos;NK1.6.1&apos;].toString()</stringValue>
                   <scriptExpression>true</scriptExpression>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
             <entry>
               <string>use</string>
-              <objectProperty>
+              <com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
                 <enabled>true</enabled>
-                <properties class="stringModel">
+                <properties class="com.mirth.connect.jsonbuilder.shared.models.StringModel">
                   <stringValue>use</stringValue>
                   <scriptExpression>true</scriptExpression>
                 </properties>
-              </objectProperty>
+              </com.mirth.connect.jsonbuilder.shared.models.ObjectProperty>
             </entry>
           </properties>
         </model>
+        <fhirVersion>R4</fhirVersion>
       </properties>
     </codeTemplate>
-    <codeTemplate version="3.6.0">
+    <codeTemplate version="3.9.0">
       <id>2b99377c-f3c3-422e-ab55-3b0d3b344107</id>
       <name>Create FHIR Patient Telecoms</name>
       <revision>1</revision>
       <lastModified>
-        <time>1527112524016</time>
+        <time>1586480094488</time>
         <timezone>America/Los_Angeles</timezone>
       </lastModified>
       <contextSet>

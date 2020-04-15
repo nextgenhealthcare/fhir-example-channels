@@ -5,4 +5,4 @@ This channel is dependent on the following code template libraries:
 - FHIR Helper Functions
 - FHIR DB Operations
 
-For more information, check out our public wiki: [https://www.mirthcorp.com/community/wiki/display/mirth/Example+Channel](https://www.mirthcorp.com/community/wiki/display/mirth/Example+Channel)
+For more information, check out our public wiki: [https://www.mirthcorp.com/community/wiki/display/mirth/Example+Channel+(R4)](https://www.mirthcorp.com/community/wiki/display/mirth/Example+Channel+(R4))
