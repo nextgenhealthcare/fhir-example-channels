@@ -1,7 +1,7 @@
 # FHIR Example Channels
 This is a repository of sample channels, code template libraries, and transformers that can be used with the FHIR Connector Extension.
 
-For more information, check our the overview and user guide on our [public wiki](https://www.mirthcorp.com/community/wiki/pages/viewpage.action?pageId=38798954)!
+The FHIR Connector Extension was previously a free-to-download pilot project. It is now available as part of our commerical offerings. If you're interested, please contact us at [mirthconnectsales@nextgen.com](matilto:mirthconnectsales@nextgen.com)! If you are already a customer, you can download the latest version of the extension (as well as the FHIR User Guide) on our client portal: [https://www.community.nextgen.com/](https://www.community.nextgen.com/)
 
 ## License
 

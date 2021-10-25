@@ -5,4 +5,4 @@ This channel is dependent on the following code template libraries:
 - FHIR Helper Functions
 - FHIR DB Operations
 
-For more information, check out our public wiki: [https://www.mirthcorp.com/community/wiki/display/mirth/Example+Channel+(R4)](https://www.mirthcorp.com/community/wiki/display/mirth/Example+Channel+(R4))
+The FHIR Connector Extension was previously a free-to-download pilot project. It is now available as part of our commerical offerings. If you're interested, please contact us at [mirthconnectsales@nextgen.com](matilto:mirthconnectsales@nextgen.com)! If you are already a customer, you can download the latest version of the extension (as well as the FHIR User Guide) on our client portal: [https://www.community.nextgen.com/](https://www.community.nextgen.com/)

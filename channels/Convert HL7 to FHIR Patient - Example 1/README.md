@@ -8,4 +8,4 @@ Other helpful reference pages:
 - [Patient documentation page](http://hl7.org/fhir/R4/patient.html)
 - [HL7 v2.x Patient mappings](http://hl7.org/fhir/R4/patient-mappings.html#v2)
 
-For more information, check out our [public wiki](https://www.mirthcorp.com/community/wiki/display/mirth/HL7+v2.x+to+FHIR+Conversions+(R4)#HL7v2.xtoFHIRConversions(R4)-ConvertHL7toFHIRPatient-Example1)!
+The FHIR Connector Extension was previously a free-to-download pilot project. It is now available as part of our commerical offerings. If you're interested, please contact us at [mirthconnectsales@nextgen.com](matilto:mirthconnectsales@nextgen.com)! If you are already a customer, you can download the latest version of the extension (as well as the FHIR User Guide) on our client portal: [https://www.community.nextgen.com/](https://www.community.nextgen.com/)
