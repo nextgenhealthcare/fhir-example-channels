@@ -1,0 +1,38 @@
+/**
+	Validate fhirResource using the HAPI FHIR built in validator.
+
+	@param {String} fhirResource(JSON)
+*/
+function isValidFHIR(resource){
+	importPackage(Packages.ca.uhn.fhir.model.api);
+	importPackage(Packages.ca.uhn.fhir.model.base.resource);
+	importPackage(Packages.ca.uhn.fhir.model.primitive);
+	importPackage(Packages.ca.uhn.fhir.model.r4.composite);
+	importPackage(Packages.ca.uhn.fhir.model.r4.resource);
+	importPackage(Packages.ca.uhn.fhir.model.r4.valueset);
+	importPackage(Packages.ca.uhn.fhir.context);
+	importPackage(Packages.ca.uhn.fhir.parser);
+	importPackage(Packages.ca.uhn.fhir.validation);
+	importPackage(Packages.ca.uhn.fhir.context.support);
+	importPackage(org.apache.commons.lang3);
+	importPackage(org.apache.commons.lang3.math);
+	try {
+		var ctx = FhirContext.forR4();
+		
+		// Create a parser and configure it to use the strict error handler
+		var parser = ctx.newJsonParser();
+		parser.setParserErrorHandler(new StrictErrorHandler());
+
+		// The following will throw a DataFormatException if there's bad data
+		if(JSON.stringify(resource)){
+			parser.parseResource(resource);
+		}
+	
+		return true;
+	}
+	catch(error) {
+		logger.error('Error:'+ error.toString());	
+		throw error;
+		return false;
+	}
+}
