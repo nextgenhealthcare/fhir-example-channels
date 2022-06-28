@@ -7,20 +7,20 @@
 function consolidate(obj) {
 	if (typeof obj != 'undefined' && obj != null) {
 		var protoToString = Object.prototype.toString.call(obj);
+		var isJavaArray = protoToString == '[object JavaArray]';
+		var isArray = isJavaArray || obj instanceof Array || protoToString == '[object Array]';
 		
-		if (obj instanceof Array || protoToString == '[object Array]' || protoToString == '[object JavaArray]') {
-			var length = obj.length;
-			
+		if (isArray) {
 			for (var i = obj.length - 1; i >= 0; i--) {
 				if (!doConsolidate(obj, i)) {
-					length--;
+					if (isJavaArray) {
+						var a1 = org.apache.commons.lang3.ArrayUtils.subarray(obj, 0, i);
+						var a2 = org.apache.commons.lang3.ArrayUtils.subarray(obj, i + 1, obj.length);
+						obj = org.apache.commons.lang3.ArrayUtils.addAll(a1, a2);
+					} else {
+						obj.splice(i, 1);
+					}
 				}
-			}
-			obj.length = length;
-
-			// Handle Java Arrays
-			if (length != obj.length) {
-				obj = org.apache.commons.lang3.ArrayUtils.subarray(obj, 0, length);
 			}
 		} else if (protoToString == '[object Object]') {
 			for (var property in obj) {

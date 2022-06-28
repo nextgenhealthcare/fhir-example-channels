@@ -188,20 +188,20 @@ function combineArrays(array1, array2) {
 function consolidate(obj) {
 	if (typeof obj != &apos;undefined&apos; &amp;&amp; obj != null) {
 		var protoToString = Object.prototype.toString.call(obj);
+		var isJavaArray = protoToString == &apos;[object JavaArray]&apos;;
+		var isArray = isJavaArray || obj instanceof Array || protoToString == &apos;[object Array]&apos;;
 		
-		if (obj instanceof Array || protoToString == &apos;[object Array]&apos; || protoToString == &apos;[object JavaArray]&apos;) {
-			var length = obj.length;
-			
-			for (var i = obj.length - 1; i &gt;= 0; i--) {
+		if (isArray) {
+			for (var i = obj.length - 1; i >= 0; i--) {
 				if (!doConsolidate(obj, i)) {
-					length--;
+					if (isJavaArray) {
+						var a1 = org.apache.commons.lang3.ArrayUtils.subarray(obj, 0, i);
+						var a2 = org.apache.commons.lang3.ArrayUtils.subarray(obj, i + 1, obj.length);
+						obj = org.apache.commons.lang3.ArrayUtils.addAll(a1, a2);
+					} else {
+						obj.splice(i, 1);
+					}
 				}
-			}
-			obj.length = length;
-
-			// Handle Java Arrays
-			if (length != obj.length) {
-				obj = org.apache.commons.lang3.ArrayUtils.subarray(obj, 0, length);
 			}
 		} else if (protoToString == &apos;[object Object]&apos;) {
 			for (var property in obj) {
